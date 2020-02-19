@@ -1,12 +1,41 @@
 <template>
-  <div>
+  <nav>
     <v-navigation-drawer 
-            v-model="drawer"
-            clipped
-            class="grey lighten-4"
-            app
-        >
-      </v-navigation-drawer> 
+      v-model="drawer"
+      clipped
+      class="grey lighten-4"
+      app
+    >
+      <v-list
+        shaped
+        dense
+        class="grey lighten-4"
+      >
+        <template v-for="(item, i) in items">
+          <v-subheader v-if="item.heading" :key="i">{{item.heading}}</v-subheader>
+
+          <v-divider
+            v-else-if="item.divider"
+            :key="i"
+            dark
+            class="my-3"
+          ></v-divider>
+
+          <v-list-item
+            v-else
+            :key="i"
+            :to="item.path"
+          >
+            <v-list-item-icon>
+              <v-icon v-text="item.icon"></v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title v-text="item.text"></v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </template>
+      </v-list>
+    </v-navigation-drawer> 
     <v-app-bar
       dense
       fixed
@@ -14,16 +43,13 @@
       dark
       app
     >
-      <v-app-bar-nav-icon @click="drawer = !drawer">
-        
+      <v-app-bar-nav-icon @click="drawer = !drawer">  
       </v-app-bar-nav-icon>
       
 
       <v-toolbar-title>Humanized Data Cleaning</v-toolbar-title>
 
       <v-spacer></v-spacer>
-
-
       <!--v-btn icon>
         <v-icon>mdi-magnify</v-icon>
       </v-btn>
@@ -49,7 +75,7 @@
         </v-list>
       </v-menu-->
     </v-app-bar>
-  </div>
+  </nav>
 </template>
 
 
@@ -60,8 +86,9 @@ export default {
     return {
       drawer: false,
         items: [
-          { heading: 'Consulta' },
-          /*{ text: '', path: '', icon: '' },*/
+          { heading: 'Data Cleaning'},
+          { text: 'Home', path: '/', icon: 'mdi-home' },
+          { text: 'Statistics', path: '/statistics', icon: 'mdi-poll' },
           { divider: true }
       ]
     }

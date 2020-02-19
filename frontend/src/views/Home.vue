@@ -1,16 +1,16 @@
 <template>
   <v-container>
-    <HotTable :settings="hotSettings"/>
+    <Table :settings="hotSettings"/>
   </v-container>
 </template>
 
 <script>
-import { HotTable } from '@handsontable/vue';
+import Table from '@/components/Table.vue'
 import Handsontable from 'handsontable';
 export default {
-  name: 'tabletest',
+  name: 'home',
   components:{
-    HotTable
+    Table
   },
   data: function() {
     return {
