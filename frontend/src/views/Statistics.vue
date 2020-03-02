@@ -1,9 +1,10 @@
 <template>
-  <v-container fluid>
+  <v-container fluid fill-width>
     <Title conteudo="Statistics" class="display-1" />
-    <!--template v-for="item in statsheaders"-->
-      <StatsBar :key="item" title="Statsheaders"/>
-    <!--/template-->
+    <template v-for="item in statsheaders" >
+      <StatsBar :key="item" :title="item"/>
+      <v-spacer :key="item"/>
+    </template>
   </v-container>
 </template>
 
@@ -15,7 +16,11 @@ export default {
     Title,
     StatsBar
   },
-  props: ['statsheaders'],
+  data(){
+    return {
+      statsheaders:['Name','Address','Something']
+    }
+  }
 
 }
 </script>

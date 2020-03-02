@@ -89,6 +89,8 @@ export default {
           { heading: 'Data Cleaning'},
           { text: 'Home', path: '/', icon: 'mdi-home' },
           { text: 'Statistics', path: '/statistics', icon: 'mdi-poll' },
+          { text: 'Suggestions', path: '/suggestions', icon: 'mdi-chat-alert' },
+          { text: 'Timeline', path: '/timeline', icon: 'mdi-chart-timeline-variant' },          
           { divider: true }
       ]
     }

@@ -1,14 +1,16 @@
 <template>
-  <v-card>
-   <v-card-title>{{title}}</v-card-title>
-    <v-row>
-     <v-col v-for="i in items" :key="i" >
-       <v-card outlined>
-        <v-card-subtitle>olá</v-card-subtitle>
-       </v-card>
-     </v-col>
-    </v-row>
-  </v-card>
+  <v-container fluid fill-width>
+    <v-card>
+      <v-card-title>{{title}}</v-card-title>
+      <v-row dense>
+        <v-col v-for="i in items" :key="i" >
+          <v-card outlined>
+            <v-card-subtitle>TODO: Display statistics</v-card-subtitle>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-card>
+  </v-container>
 </template>
 
 <script>
