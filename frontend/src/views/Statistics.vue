@@ -1,26 +1,51 @@
 <template>
   <v-container fluid fill-width>
-    <Title conteudo="Statistics" class="display-1" />
-    <template v-for="item in statsheaders" >
-      <StatsBar :key="item" :title="item"/>
-      <v-spacer :key="item"/>
-    </template>
+    <v-row dense fill-width v-for="item in statsheaders" :key="item"  >
+      <StatsBar  :title="item"/>
+    </v-row>
+    <v-container id="datafooter" fluid>
+      <Table :settings="hotSettings"/>
+    </v-container>
   </v-container>
 </template>
 
 <script>
-import Title from '@/components/Title.vue'
 import StatsBar from '@/components/StatsBar.vue'
+import Handsontable from 'handsontable'
 export default {
   components:{
-    Title,
     StatsBar
   },
-  data(){
+  data: function() {
     return {
-      statsheaders:['Name','Address','Something']
+      statsheaders:['Name','Address','Something'],
+      hotSettings: {
+        data: Handsontable.helper.createSpreadsheetData(1000, 10),
+        colHeaders: true,
+        width:'100%',
+        stretchH: 'all',
+        height:'  ',
+        contextMenu: 'true',
+        dropdownMenu: [
+          'remove_col',
+          '---------',
+          'make_read_only',
+          '---------',
+          'alignment'
+        ],
+        overflow: 'hidden',
+        licenseKey: 'non-commercial-and-evaluation'
+      } 
     }
-  }
+  },
 
 }
 </script>
+
+<style src="../../node_modules/handsontable/dist/handsontable.full.css"></style>
+<style>
+#datafooter{
+position:absolute;
+bottom:0;
+}
+</style>

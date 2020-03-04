@@ -1,36 +1,55 @@
 <template>
   <v-container fluid fill-width>
-    <Title conteudo="Suggestions" class="display-1" />
-    <v-row fill-height>
+    <v-row dense>
       <v-col cols=4>
-        <v-card outlined> <!-- Cicle card for multiple suggestions -->
-          <v-card-title>Suggestion 1 </v-card-title>
-          <v-card-text>Hello darkness my old friend</v-card-text> 
-        </v-card>
         <SuggestionCard/>
       </v-col>
-      <v-col cols=8>
-        
-        <v-card outlined>
-          <v-card-title>Data prev </v-card-title>
-          <v-card-text>Hello darkness my old friend</v-card-text> 
+      <v-col cols=8>  
+        <v-card tile outlined>
+          <Table :settings="hotSettings"/>
         </v-card>
         <DataPreview/>
       </v-col>
     </v-row>
-  </v-container>
+    <v-container id="datafooter" fluid>
+      <Table :settings="hotSettings"/>
+    </v-container>
+  </v-container>  
 </template>
   
 <script>
-import Title from '@/components/Title.vue'
-import DataPreview from '@/components/DataPreview.vue'
+//import DataPreview from '@/components/DataPreview.vue'
 import SuggestionCard from '@/components/SuggestionCard.vue'
-
+import Table from '@/components/Table.vue'
+import Handsontable from 'handsontable'
 export default {
   components:{
-    Title,
-    DataPreview,
-    SuggestionCard
+//    DataPreview,
+    SuggestionCard,
+    Table
+  },
+  data: function() {
+    return {
+      hotSettings: {
+        data: Handsontable.helper.createSpreadsheetData(1000, 10),
+        colHeaders: true,
+        width:'100%',
+        stretchH: 'all',
+        height:'400',
+        contextMenu: 'true',
+        dropdownMenu: [
+          'remove_col',
+          '---------',
+          'make_read_only',
+          '---------',
+          'alignment'
+        ],
+        overflow: 'hidden',
+        licenseKey: 'non-commercial-and-evaluation'
+      }
+    }
   }
 }
 </script>
+
+<style src="../../node_modules/handsontable/dist/handsontable.full.css"></style>
