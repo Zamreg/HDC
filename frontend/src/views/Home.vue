@@ -3,54 +3,112 @@
     <v-row dense id="statsAndSuggestions">
       <v-col cols=3>
         <v-carousel
-          height="100"
+          height="200"
           hide-delimiters
           show-arrows-on-hover
         >
           <v-carousel-item v-for="item in hotSettings1.colHeaders" :key="item" >
-            <SuggestionCard :title="item"/>
+            <SuggestionCard :title="item" height="200"/>
           </v-carousel-item>
         </v-carousel>  
       </v-col>
-      
+      <v-col>
+        <v-card flat outlined height="200" class="card-outer">
+          <v-card-text class="subtitle-1 text--primary" align="center">
+            Define bounds and remove outliers? (Battery_level)
+            <v-row dense>
+              <v-col>
+                <v-text-field label="Minimun"></v-text-field>
+              </v-col>
+              <v-col>
+                <v-text-field label="Maximum"></v-text-field>
+              </v-col>
+            </v-row>
+          </v-card-text>
+          <v-card-actions class="card-actions">
+            <v-btn
+              color="black"
+              text
+            >
+              Apply
+            </v-btn>
+            <v-btn
+              color="black"
+              text
+            >
+              Preview
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-col>
+      <v-col>
+        <v-card flat outlined height="200" class="card-outer">
+          <v-card-text class="subtitle-1 text--primary" align="center">
+            Replace similar values? (Codename)
+            <v-radio-group>
+            <v-row dense> 
+              <v-col >
+                <v-radio class="subtitle-1 text--primary" label="Marshmallow"></v-radio>
+              </v-col>
+              <v-col>
+                <v-radio class="subtitle-1" label="MARSHMALLOW"></v-radio>
+              </v-col>
+            </v-row>
+            </v-radio-group>
+          </v-card-text>
+          <v-card-actions class="card-actions">
+            <v-btn
+              color="black"
+              text
+            >
+              Apply
+            </v-btn>
+            <v-btn
+              color="black"
+              text
+            >
+              Preview
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-col>
+      <v-col>
+        <v-card flat outlined height="200" class="card-outer">
+          <v-card-text class="subtitle-1 text--primary" align="center">
+            Remove null values? (Codename)
+          </v-card-text>
+          <v-card-actions class="card-actions">
+            <v-btn
+              color="black"
+              text
+            >
+              Apply
+            </v-btn>
+            <v-btn
+              color="black"
+              text
+            >
+              Preview
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-col>
     </v-row>
     <v-row id="dataPrev">
       <Table ref="dataTable" :settings="hotSettings1"/>
     </v-row>
+    <v-row id="syncBox">
+      <v-checkbox label="Synchronized Scrolling" v-model="syncScroll"/>
+    </v-row>
     <v-row id="originalData">
       <Table ref="dataTable" :settings="hotSettings1"/>
     </v-row>
-    <!--v-row dense id="sugAndPrev">
-      <v-col cols=4>
-        <v-card id="car" flat tile>
-        <v-carousel
-          height="320"
-          show-arrows-on-hover
-        >
-        <v-carousel-item>
-          <v-btn v-on:click="getSelectedData()"> Selected Data {{this.sel}} </v-btn>
-          <SuggestionCard height="" title="Suggestion 1"/>
-        </v-carousel-item>
-        <v-carousel-item>
-          <SuggestionCard height="" text="Delete Null values" title="Suggestion 2"/>
-        </v-carousel-item>
-        </v-carousel>
-        </v-card> 
-      </v-col>
-      <v-col cols=8>
-        <Table :settings="hotSettings1"/>
-      </v-col>
-    </v-row>    
-    <v-container id="datafooter" fluid>
-      <Table ref="dataTable" :settings="hotSettings1"/>
-    </v-container-->
   </v-container>
 </template>
 
 <script>
 import SuggestionCard from '@/components/SuggestionCard.vue'
 import Table from '@/components/Table.vue'
-import Handsontable from 'handsontable'
 export default {
   name: 'home',
   components:{
@@ -59,6 +117,7 @@ export default {
   },
   data: function() {
     return {
+      syncScroll: false,
       hotSettings1: {
         data:[
           ["'VS500PP'","'lge'","'6.0.1'",'Marshmallow',88,'us','America/Chicago'],
@@ -104,7 +163,7 @@ export default {
         colHeaders: ['Model','Brand','OS_Version','Codename','Battery_level','Country_code','Time_zone'],
         width:'100%',
         stretchH: 'all',
-        height: '250',
+        height: '275',
         outsideClickDeselects: 'false',
         contextMenu: 'true',
         dropdownMenu: [
@@ -116,25 +175,7 @@ export default {
         ],
         overflow: 'hidden',
         licenseKey: 'non-commercial-and-evaluation'
-      },
-      hotSettings2: {
-        data: Handsontable.helper.createSpreadsheetData(100, 100),
-        colHeaders: true,
-        width:'100%',
-        stretchH: 'all',
-        height: '300',
-        outsideClickDeselects: 'false',
-        contextMenu: 'true',
-        dropdownMenu: [
-          'Rename',
-          '---------',
-          'Remove',
-          '---------',
-          'Filter'
-        ],
-        overflow: 'hidden',
-        licenseKey: 'non-commercial-and-evaluation'
-      },
+      }
     }
   },
   methods:{
@@ -156,5 +197,16 @@ export default {
 }
 #originalData{
   height:40%;
+}
+#syncBox{
+  padding-left: 50px;
+}
+.card-outter {
+  position: relative;
+  padding-bottom: 50px;
+}
+.card-actions {
+  position: absolute;
+  bottom: 0;
 }
 </style>
