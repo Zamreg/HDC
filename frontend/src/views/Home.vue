@@ -3,25 +3,25 @@
     <v-row dense id="statsAndSuggestions">
       <v-col cols=3>
         <v-carousel
-          height="200"
+          height="230"
           hide-delimiters
           show-arrows-on-hover
         >
           <v-carousel-item v-for="item in hotSettings1.colHeaders" :key="item" >
-            <SuggestionCard :title="item" height="200"/>
+            <SuggestionCard :title="item" height="230"/>
           </v-carousel-item>
         </v-carousel>  
       </v-col>
       <v-col>
-        <v-card flat outlined height="200" class="card-outer">
+        <v-card flat outlined height="230" class="card-outer">
           <v-card-text class="subtitle-1 text--primary" align="center">
-            Define bounds and remove outliers? (Battery_level)
-            <v-row dense>
+            Define bounds and remove outliers?
+            <v-row dense align="center" justify="center" style="height: 120px;">
               <v-col>
-                <v-text-field label="Minimun"></v-text-field>
+                <v-text-field single-line dense height="29" label="Minimum"></v-text-field>
               </v-col>
               <v-col>
-                <v-text-field label="Maximum"></v-text-field>
+                <v-text-field single-line dense height="29" label="Maximum"></v-text-field>
               </v-col>
             </v-row>
           </v-card-text>
@@ -42,17 +42,21 @@
         </v-card>
       </v-col>
       <v-col>
-        <v-card flat outlined height="200" class="card-outer">
+        <v-card flat outlined height="230" class="card-outer">
           <v-card-text class="subtitle-1 text--primary" align="center">
-            Replace similar values? (Codename)
-            <v-radio-group>
-            <v-row dense> 
-              <v-col >
-                <v-radio class="subtitle-1 text--primary" label="Marshmallow"></v-radio>
-              </v-col>
-              <v-col>
-                <v-radio class="subtitle-1" label="MARSHMALLOW"></v-radio>
-              </v-col>
+            Replace similar values?
+            <v-radio-group v-model="replaceRadios">
+            <v-row dense>
+              <v-radio class="subtitle-1 text--primary" value="MARSHMALLOW" label="Marshmallow to MARSHMALLOW"></v-radio>
+            </v-row>
+            <v-row dense id="padding1">
+              <v-radio class="subtitle-1 text--primary" value="Marshmallow" label="MARSHMALLOW to Marshmallow"></v-radio>
+            </v-row>
+            <v-row dense>
+              <v-radio  class="subtitle-1 text--primary" value="Both" label="Both to:"></v-radio>
+              <v-spacer/>
+              <v-text-field single-line dense height="29" label="Value" class="subtitle-1 text--primary" :disabled="this.replaceRadios!='Both'">  </v-text-field>      
+              <v-spacer/>
             </v-row>
             </v-radio-group>
           </v-card-text>
@@ -69,14 +73,36 @@
             >
               Preview
             </v-btn>
+            <v-btn
+              color="black"
+              text
+              v-on:click="clearReplaceRadios()"
+              v-if="replaceRadios!=null"
+            >
+              Clear Selection
+            </v-btn>
           </v-card-actions>
         </v-card>
       </v-col>
       <v-col>
-        <v-card flat outlined height="200" class="card-outer">
+        <v-card flat outlined height="230" class="card-outer">
           <v-card-text class="subtitle-1 text--primary" align="center">
-            Remove null values? (Codename)
+            Replace or remove null values?
+            <v-radio-group v-model="nullRadios">
+            <v-row dense>
+              <v-col>
+                <v-radio value="Replace" label="Replace"></v-radio>
+              </v-col>
+              <v-col>
+                <v-radio value="Remove" label="Remove"></v-radio>
+              </v-col>
+            </v-row>
+            </v-radio-group>
+            <v-container fluid fill-width id="padding2">
+            <v-text-field single-line dense height="29" flat label="Replace" :disabled="enableText"></v-text-field>
+            </v-container>
           </v-card-text>
+          
           <v-card-actions class="card-actions">
             <v-btn
               color="black"
@@ -90,15 +116,67 @@
             >
               Preview
             </v-btn>
+            <v-btn
+              color="black"
+              text
+              v-on:click="clearNullRadios()"
+              v-if="nullRadios!=null"
+            >
+              Clear Selection
+            </v-btn>
           </v-card-actions>
         </v-card>
       </v-col>
     </v-row>
     <v-row id="dataPrev">
-      <Table ref="dataTable" :settings="hotSettings1"/>
+      <Table ref="dataTablePrev" :settings="hotSettings1"/>
     </v-row>
-    <v-row id="syncBox">
-      <v-checkbox label="Synchronized Scrolling" v-model="syncScroll"/>
+    <v-row align="center" justify="center" id="syncBox">
+      <v-col cols=2>
+        <v-checkbox id="checkbox" label="Synchronized Scrolling" v-model="syncScroll"/>
+      </v-col>
+      <v-col>
+      <v-dialog
+        v-model="dialog"
+        width="500"
+      >
+        <template v-slot:activator="{ on }">
+          <v-btn
+            color="black"
+            text
+            v-on="on"
+            @click="this.getSelectedData()"
+          >
+            Get Selected Data
+          </v-btn>
+        </template>
+
+        <v-card>
+          <v-card-title
+            primary-title
+          >
+            Selected Data
+          </v-card-title>
+
+          <v-card-text>
+          {{this.selected}}
+          </v-card-text>
+
+          <v-divider></v-divider>
+
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+              color="primary"
+              text
+              @click="dialog = false"
+            >
+              Close
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      </v-col>
     </v-row>
     <v-row id="originalData">
       <Table ref="dataTable" :settings="hotSettings1"/>
@@ -117,7 +195,11 @@ export default {
   },
   data: function() {
     return {
+      dialog:false,
       syncScroll: false,
+      nullRadios: null,
+      replaceRadios: null,
+      selected: null,
       hotSettings1: {
         data:[
           ["'VS500PP'","'lge'","'6.0.1'",'Marshmallow',88,'us','America/Chicago'],
@@ -163,8 +245,8 @@ export default {
         colHeaders: ['Model','Brand','OS_Version','Codename','Battery_level','Country_code','Time_zone'],
         width:'100%',
         stretchH: 'all',
-        height: '275',
-        outsideClickDeselects: 'false',
+        height: '255',
+        outsideClickDeselects: false,
         contextMenu: 'true',
         dropdownMenu: [
           'Rename',
@@ -178,9 +260,24 @@ export default {
       }
     }
   },
+  computed:{
+    enableText: function(){
+      if(this.nullRadios == "Replace") return false;
+      else return true;
+    },
+    
+    
+  },
   methods:{
     getSelectedData: function(){
-      return this.sel = this.$refs.dataTable.getSelectedData()
+      this.selected = this.$refs.dataTablePrev.getSelectedData()
+      console.log(this.selected)
+    },
+    clearReplaceRadios: function(){
+      this.replaceRadios = null;
+    },
+    clearNullRadios: function(){
+      this.nullRadios = null;
     }
   }
 }
@@ -198,7 +295,16 @@ export default {
 #originalData{
   height:40%;
 }
+#padding1{
+  padding-top:10px;
+}
+#padding2{
+  padding: 0;
+  padding-left:32px;
+  padding-right: 100px;
+}
 #syncBox{
+  padding: 0%;
   padding-left: 50px;
 }
 .card-outter {

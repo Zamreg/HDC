@@ -11,20 +11,21 @@
       <v-container id="code" v-if="this.title=='Codename'" >
         <v-row dense >
           <v-col id="codeCol" class="text--primary body-2" align="left">
-            Null<br>
-            Kitkat<br>
-            Lollipop<br>
-            Marshmallow<br>
+            Nougat<br>
             MARSHMALLOW<br>
-            Nougat
+            Marshmallow<br>
+            Lollipop<br>
+            Kitkat<br>
+            Null
+            
           </v-col>
           <v-col id="countCol" class="text--primary body-2" align="right">
-            1<br>
-            1<br>
+            18<br>
+            10<br>
             5<br>
             3<br>
-            10<br>
-            18
+            1<br>
+            1<br>
           </v-col>
         </v-row>
       </v-container>
