@@ -1,13 +1,7 @@
 <template>
   <v-container fluid fill-height >
-    <hot-table id="table" ref="hotTableComponent" :settings="settings"/>
-    <v-btn
-      color="black"
-      text
-      v-on:click="getSelectedColHeader()"
-    >
-      Get Selected Data
-    </v-btn>
+    <hot-table id="table" :data="data" :colHeaders="headers" ref="hotTableComponent" read-only='true' :settings="settings" v-if="original"/>
+    <hot-table id="table" :data="data" :colHeaders="headers" ref="hotTableComponent" :settings="settings" v-else/>
   </v-container>
 </template>
 
@@ -16,16 +10,18 @@
 import { HotTable } from '@handsontable/vue';
 import 'handsontable'
 export default {
-  props: ['settings'],
+  props: ['headers','data','settings','original'],
   components:{
     HotTable
+  },
+  computed:{
+   
   },
   methods:{
     getSelectedColHeader: function(){
       var arr = this.$refs.hotTableComponent.hotInstance.getSelected()
       
       var sel = this.$refs.hotTableComponent.hotInstance.getColHeader(arr[0][1])
-      console.log(sel)
       return sel
     }
   }

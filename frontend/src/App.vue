@@ -17,7 +17,7 @@ export default {
 </script>
 
 <style>
-html{
+.v-app{
   overflow-y: auto;
 }
 </style>

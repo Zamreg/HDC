@@ -41,7 +41,7 @@
       fixed
       clipped-left
       dark
-      app
+      app 
     >
       <v-app-bar-nav-icon @click="drawer = !drawer">  
       </v-app-bar-nav-icon>
@@ -64,8 +64,6 @@ export default {
         items: [
           { heading: 'Data Cleaning'},
           { text: 'Home', path: '/', icon: 'mdi-home' },
-          { text: 'Statistics', path: '/statistics', icon: 'mdi-poll' },
-          { text: 'Suggestions', path: '/suggestions', icon: 'mdi-chat-alert' },
           { text: 'Timeline', path: '/timeline', icon: 'mdi-chart-timeline-variant' },          
           { divider: true }
       ]
@@ -81,3 +79,9 @@ export default {
   }
 }
 </script>
+
+<style>
+.nav{
+  transition: top 0s;
+}
+</style>
