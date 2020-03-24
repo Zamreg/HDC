@@ -14,13 +14,13 @@ export default {
   components:{
     HotTable
   },
-  computed:{
-   
-  },
   methods:{
+    getSelected: function(){
+      var arr = this.$refs.hotTableComponent.hotInstance.getSelected()
+      return arr[0][1]
+    },
     getSelectedColHeader: function(){
       var arr = this.$refs.hotTableComponent.hotInstance.getSelected()
-      
       var sel = this.$refs.hotTableComponent.hotInstance.getColHeader(arr[0][1])
       return sel
     }

@@ -2,6 +2,7 @@
   <v-row dense id="statsAndSuggestions">
     <v-col cols=3>
       <v-carousel
+        v-model="controller"
         height="230"
         hide-delimiters
         show-arrows-on-hover
@@ -41,6 +42,7 @@ export default {
     return{
       nullRadios: null,
       replaceRadios: null,
+      controller: 0
     }
   },
   methods:{
@@ -49,6 +51,9 @@ export default {
     },
     clearNullRadios: function(){
       this.nullRadios = null;
+    },
+    updateModel: function(col){
+      this.controller=col
     }
   }
 }

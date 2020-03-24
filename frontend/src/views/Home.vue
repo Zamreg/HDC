@@ -1,15 +1,15 @@
 <template>
   <v-container fluid fill-width>
-    <suggestion-bar :headers="this.headers"/>
+    <suggestion-bar :headers="this.headers" ref="suggestionBar"/>
     <v-row id="dataPrev">
-      <Table ref="dataTablePrev" :headers="this.headers" :data='this.rawData' :settings="hotSettings1"/>
+      <Table ref="dataTablePrev" :headers="this.headers" :data='this.rawData' :settings="hotSettingsPrev"/>
     </v-row>
     <v-row align="center" justify="center" id="syncBox">
       <v-col cols=2>
         <v-checkbox id="checkbox" label="Synchronized Scrolling" v-model="syncScroll"/>
       </v-col>
       <v-col>
-      <v-dialog
+      <!--v-dialog
         v-model="dialog"
         width="500"
       >
@@ -48,7 +48,7 @@
             </v-btn>
           </v-card-actions>
         </v-card>
-      </v-dialog>
+      </v-dialog-->
       </v-col>
     </v-row>
     <v-row id="originalData">
@@ -78,7 +78,25 @@ export default {
         width:'100%',
         stretchH: 'all',
         height: '255',
-        outsideClickDeselects: false,
+        contextMenu: 'true',
+        dropdownMenu: [
+          'Rename',
+          '---------',
+          'Remove',
+          '---------',
+          'Filter'
+        ],
+        overflow: 'hidden',
+        licenseKey: 'non-commercial-and-evaluation'
+      },
+      hotSettingsPrev: {
+        afterSelectionEnd: () => {
+          this.updateModel()
+        },
+        rowHeaders: true,
+        width:'100%',
+        stretchH: 'all',
+        height: '255',
         contextMenu: 'true',
         dropdownMenu: [
           'Rename',
@@ -103,7 +121,11 @@ export default {
   methods:{
     getSelectedData: function(){
       this.selected = this.$refs.dataTablePrev.getSelectedColHeader()
-      console.log(this.selected)
+      this.updateModel()
+    },
+    updateModel: function(){
+      var col = this.$refs.dataTablePrev.getSelected()
+      this.$refs.suggestionBar.updateModel(col)
     }
   }
 }
