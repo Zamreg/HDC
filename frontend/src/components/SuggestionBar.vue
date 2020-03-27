@@ -12,14 +12,14 @@
         </v-carousel-item>
       </v-carousel>  
     </v-col>
-    <v-col>
-      <BoundsCard/>
+    <v-col v-if="controller==4" cols=3>
+      <BoundsCard :controller="controller"/>
     </v-col>
-    <v-col>
-      <ReplaceCard/>
+    <v-col v-if="controller==3" cols=3>
+      <ReplaceCard :controller="controller"/>
     </v-col>
-    <v-col>
-      <NullCard/>
+    <v-col v-if="controller==3" cols=3>
+      <NullCard :controller="controller"/>
     </v-col>
   </v-row>
 </template>

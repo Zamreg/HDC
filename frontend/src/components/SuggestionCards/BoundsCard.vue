@@ -32,7 +32,8 @@
 
 <script>
 export default {
-  name:'bounds-card'
+  name:'bounds-card',
+  props:['controller']
 }
 </script>
 

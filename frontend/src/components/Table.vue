@@ -1,7 +1,7 @@
 <template>
   <v-container fluid fill-height >
-    <hot-table id="table" :data="data" :colHeaders="headers" ref="hotTableComponent" read-only='true' :settings="settings" v-if="original"/>
-    <hot-table id="table" :data="data" :colHeaders="headers" ref="hotTableComponent" :settings="settings" v-else/>
+    <hot-table id="table" :key="this.$store.state.changeCounter" :data="data" :colHeaders="headers" ref="hotTableComponent" read-only='true' :settings="settings" v-if="original"/>
+    <hot-table id="table" :key="this.$store.state.changeCounter" :data="data" :colHeaders="headers" ref="hotTableComponent" :settings="settings" v-else/>
   </v-container>
 </template>
 

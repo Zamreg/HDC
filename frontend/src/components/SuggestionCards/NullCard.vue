@@ -13,7 +13,7 @@
           </v-row>
           </v-radio-group>
           <v-container fluid fill-width id="padding2">
-          <v-text-field single-line dense height="29" flat label="Replace" :disabled="enableText"></v-text-field>
+          <v-text-field single-line dense height="29" flat label="Replace" :disabled="enableText" v-model="replaceVal"></v-text-field>
           </v-container>
         </v-card-text>
         
@@ -21,6 +21,7 @@
           <v-btn
             color="black"
             text
+            v-on:click="apply()"
           >
             Apply
           </v-btn>
@@ -45,9 +46,11 @@
 <script>
 export default {
   name: 'null-card',
+  props:['controller'],
   data: function(){
     return{
       nullRadios: null,
+      replaceVal: null
     }
   },
   computed:{
@@ -58,7 +61,20 @@ export default {
   },
   methods:{
     clearNullRadios: function(){
-      this.nullRadios = null;
+      this.nullRadios = null
+      this.replaceVal = null
+    },
+    apply: function(){
+      if(this.nullRadios=="Replace"){
+        this.$store.dispatch('replaceNull',{
+          col: this.controller,
+          val: this.replaceVal
+        })
+      } else if(this.nullRadios=="Remove"){
+        this.$store.dispatch('removeNull',{
+          col: this.controller
+        })
+      }
     }
   }
 }

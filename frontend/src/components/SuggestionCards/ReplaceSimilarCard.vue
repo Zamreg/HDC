@@ -12,7 +12,7 @@
       <v-row dense>
         <v-radio  class="subtitle-1 text--primary" value="Both" label="Both to:"></v-radio>
         <v-spacer/>
-        <v-text-field single-line dense height="29" label="Value" class="subtitle-1 text--primary" :disabled="this.replaceRadios!='Both'">  </v-text-field>      
+        <v-text-field single-line dense height="29" label="Value" class="subtitle-1 text--primary" :disabled="this.replaceRadios!='Both'" v-model="this.replaceVal">  </v-text-field>      
         <v-spacer/>
       </v-row>
       </v-radio-group>
@@ -21,6 +21,7 @@
       <v-btn
         color="black"
         text
+        v-on:click="apply()"
       >
         Apply
       </v-btn>
@@ -45,16 +46,20 @@
 <script>
 export default {
   name:'replace-card',
-  props:[],
+  props:['controller'],
   data: function(){
     return{
-      replaceRadios: null
+      replaceRadios: null,
+      replaceVal: null
     }
   },
   methods:{
     clearReplaceRadios: function(){
       this.replaceRadios = null;
     },
+    apply: function(){
+      console.log(this.replaceVal)
+    }
   }
 }
 </script>
