@@ -1,16 +1,17 @@
 <template>
   <v-row dense id="statsAndSuggestions">
     <v-col cols=3>
-      <v-carousel
+      <Stats :controller="controller" :height="230"/>
+      <!--v-carousel
         v-model="controller"
         height="230"
         hide-delimiters
         show-arrows-on-hover
       >
         <v-carousel-item v-for="item in headers" :key="item" >
-          <StatsCard :title="item" height="230"/>
+          <Stats :controller="controller" :title="item" height="230"/>
         </v-carousel-item>
-      </v-carousel>  
+      </v-carousel-->  
     </v-col>
     <v-col v-if="controller==4" cols=3>
       <BoundsCard :controller="controller"/>
@@ -25,7 +26,7 @@
 </template>
 
 <script>
-import StatsCard from '@/components/StatsCard.vue'
+import Stats from '@/components/Stats.vue'
 import NullCard from '@/components/SuggestionCards/NullCard.vue'
 import BoundsCard from '@/components/SuggestionCards/BoundsCard.vue'
 import ReplaceCard from '@/components/SuggestionCards/ReplaceSimilarCard.vue'
@@ -33,7 +34,7 @@ export default {
   name:'suggestion-bar',
   props:['headers'],
   components:{
-    StatsCard,
+    Stats,
     NullCard,
     ReplaceCard,
     BoundsCard

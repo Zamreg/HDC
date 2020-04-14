@@ -92,7 +92,12 @@ export default new Vuex.Store({
     ],
   },
   getters: {
-    
+    getColDataType: (state) => (controller) => {
+      return typeof state.data[0][controller]
+    },
+    getNumberOfCols: (state) => {
+      return state.colHeaders.length
+    }
   },
   mutations: {
     replaceNull (state, payload) {
