@@ -7,7 +7,34 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     changeCounter:0,
-    colHeaders: ['Model','Brand','OS_Version','Codename','Battery_level','Country_code','Time_zone'],
+    colHeaders: function (col) {
+      switch (col) {
+        case 0:
+          return 'Model'
+          //return '<input type="checkbox" name="col0" class="checker"/> Model';
+        case 1:
+          return 'Brand'
+          //return '<input type="checkbox" name="col1" class="checker"> Brand';
+        case 2:
+          return 'OS_Version'
+          //return '<input type="checkbox" name="col2" class="checker"> OS_Version';
+        case 3:
+          return 'Codename'
+          //return '<input type="checkbox" name="col3" class="checker"> Codename';
+        case 4:
+          return 'Battery_level'  
+          //return '<input type="checkbox" name="col4" class="checker"> Battery_level';
+        case 5:
+          return 'Country_code'  
+          //return '<input type="checkbox" name="col5" class="checker"> Country_code';
+        case 6:
+          return 'Time_zone'  
+          //return '<input type="checkbox" name="col6" class="checker"> Time_zone';
+        default:
+          return '';
+      }
+    },
+    colHeaderNames: ['Model','Brand','OS_Version','Codename','Battery_level','Country_code','Time_zone'],
     data:[
       ["'VS500PP'","'lge'","'6.0.1'",'Marshmallow',88,'us','America/Chicago'],
       ["'AO5510'","'YU'","'5.1.1'",'Lollipop',59,'pt','Europe/Lisbon'],
@@ -117,6 +144,24 @@ export default new Vuex.Store({
       }
       state.dataHistory.push(state.data)
       state.changeCounter++
+    },
+    removeOutliers (state, payload){
+      for(var row=0; state.data[row]; row++){
+        if(state.data[row][payload.col] < payload.min || state.data[row][payload.col] > payload.max){
+          state.data.splice(row,1)
+        }
+      }
+      state.dataHistory.push(state.data)
+      state.changeCounter++
+    },
+    replaceSimilarValues (state, payload){
+      for(var row=0; state.data[row]; row++){
+        if(payload.toReplace.includes( state.data[row][payload.col] )){
+          state.data[row][payload.col] = payload.new
+        }
+      }
+      state.dataHistory.push(state.data)
+      state.changeCounter++
     }
   },
   actions: {
@@ -125,6 +170,12 @@ export default new Vuex.Store({
     },
     removeNull (state, payload) {
       state.commit('removeNull', payload)
+    },
+    removeOutliers (state, payload){
+      state.commit('removeOutliers', payload)
+    },
+    replaceSimilarValues (state, payload){
+      state.commit('replaceSimilarValues',payload)
     }
   }
 });

@@ -17,6 +17,10 @@ export default {
 </script>
 
 <style>
+
+html, body {
+  font-family: 'Roboto Narrrow', sans-serif;
+}
 .v-app{
   overflow-y: auto;
 }

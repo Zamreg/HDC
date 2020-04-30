@@ -1,23 +1,13 @@
 <template>
   <v-row dense id="statsAndSuggestions">
     <v-col cols=3>
-      <Stats :controller="controller" :height="230"/>
-      <!--v-carousel
-        v-model="controller"
-        height="230"
-        hide-delimiters
-        show-arrows-on-hover
-      >
-        <v-carousel-item v-for="item in headers" :key="item" >
-          <Stats :controller="controller" :title="item" height="230"/>
-        </v-carousel-item>
-      </v-carousel-->  
+      <Stats :controller="controller" :key="this.$store.state.changeCounter" :height="230"/>
     </v-col>
     <v-col v-if="controller==4" cols=3>
       <BoundsCard :controller="controller"/>
     </v-col>
     <v-col v-if="controller==3" cols=3>
-      <ReplaceCard :controller="controller"/>
+      <ReplaceCard :controller="controller" :valuesToReplace="['Marshmallow','MARSHMALLOW']"/>
     </v-col>
     <v-col v-if="controller==3" cols=3>
       <NullCard :controller="controller"/>

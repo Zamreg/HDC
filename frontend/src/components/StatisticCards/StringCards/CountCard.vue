@@ -4,13 +4,13 @@
     <v-container id="code" >
       <v-row dense >
         <v-col id="codeCol" class="text--primary body-2" align="left">
-          <p class="line" v-for="item in this.uniqueValues" :key="item">{{
+          <p class="line" v-for="item in this.uniqueValues" :key="item.val">{{
             item.val
             }}
           </p>
         </v-col>
         <v-col id="countCol" class="text--primary body-2" align="right">
-          <p class="line" v-for="item in this.uniqueValues" :key="item">{{item.count}}</p>
+          <p class="line" v-for="item in this.uniqueValues" :key="item.val">{{item.count}}</p>
         </v-col>
       </v-row>
     </v-container>

@@ -2,11 +2,12 @@
   <v-container fluid fill-width>
     <suggestion-bar :headers="this.headers" ref="suggestionBar"/>
     <v-row id="dataPrev">
-      <Table ref="dataTablePrev" :headers="this.headers" :data='this.rawData' :settings="hotSettingsPrev"/>
+      <Table ref="dataTablePrev" :headers="this.headers" :data='this.rawData' :settings="hotSettingsPrev" :selected="selectedColumns"/>
     </v-row>
     <v-row align="center" justify="center" id="syncBox">
+      <Dropdown @changeSelected="changeSelectedColumns"/>
       <v-col cols=2>
-        <v-checkbox id="checkbox" label="Synchronized Scrolling" v-model="syncScroll"/>
+        <v-checkbox color="grey darken-3" id="checkbox" label="Synchronized Scrolling" v-model="syncScroll"/>
       </v-col>
     </v-row>
     <v-row id="originalData">
@@ -18,34 +19,32 @@
 <script>
 import Table from '@/components/Table.vue'
 import SuggestionBar from '@/components/SuggestionBar.vue'
+import Dropdown from '@/components/SelectMenu.vue'
 
 export default {
   name: 'home',
   components:{
     Table,
+    Dropdown,
     SuggestionBar
     //StatsCard
   },
   data: function() {
     return {
+      selectedColumns:[],
+
       rawData: this.$store.state.data,
       headers: this.$store.state.colHeaders,
-      dialog:false,
+
       syncScroll: false,
       selected: null,
+    
       hotSettings1: {
+        columnSorting: true,
         rowHeaders: true,
         width:'100%',
         stretchH: 'all',
         height: '255',
-        contextMenu: 'true',
-        dropdownMenu: [
-          'Rename',
-          '---------',
-          'Remove',
-          '---------',
-          'Filter'
-        ],
         overflow: 'hidden',
         licenseKey: 'non-commercial-and-evaluation'
       },
@@ -53,24 +52,40 @@ export default {
         afterSelectionEnd: () => {
           this.updateModel()
         },
+        selectionRanges: 'multiple',
+        //outsideClickDeselects: false,
+        columnSorting: true,
         rowHeaders: true,
         width:'100%',
         stretchH: 'all',
         height: '255',
-        contextMenu: 'true',
-        dropdownMenu: [
-          'Rename',
-          '---------',
-          'Remove',
-          '---------',
-          'Filter'
-        ],
+        filters: true,
+        dropdownMenu:{
+          items:{
+            /*"select_col":{
+              name: function(){
+                return "<input type='checkbox' id='select'/> Select Columnn"
+              }
+            },*/
+            "filter_by_condition":{},
+            "filter_operators":{},
+            "filter_by_condition2":{},
+            "filter_by_value":{},
+            "filter_action_bar":{}
+          }
+        },
         overflow: 'hidden',
         licenseKey: 'non-commercial-and-evaluation'
       }
     }
   },
   methods:{
+    changeSelectedColumns: function(arg,n){
+      if(n==0){
+        this.selectedColumns = []
+      }
+      this.selectedColumns.push(arg)
+    },
     getSelectedData: function(){
       this.selected = this.$refs.dataTablePrev.getSelectedColHeader()
       this.updateModel()

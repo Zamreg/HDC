@@ -25,39 +25,6 @@
       </v-carousel-item>
     </v-carousel>  
   </div>
-<!--  
-    <v-card flat outlined :height="height">
-      <v-card-text class="text--primary body-1" align="center">{{title}}</v-card-text>
-      <v-card-text v-if="this.title=='Battery_level'" class="text--primary body-1" align="center">
-          Minimum = -5 <br>
-          Average = 57<br>
-          Median = 55 <br>
-          Maximum = 111
-      </v-card-text>
-      <v-container id="code" v-if="this.title=='Codename'" >
-        <v-row dense >
-          <v-col id="codeCol" class="text--primary body-2" align="left">
-            Nougat<br>
-            MARSHMALLOW<br>
-            Marshmallow<br>
-            Lollipop<br>
-            Kitkat<br>
-            Null
-            
-          </v-col>
-          <v-col id="countCol" class="text--primary body-2" align="right">
-            18<br>
-            10<br>
-            5<br>
-            3<br>
-            1<br>
-            1<br>
-          </v-col>
-        </v-row>
-      </v-container>
-    </v-card>
-
--->
 </template>
 
 <script>
