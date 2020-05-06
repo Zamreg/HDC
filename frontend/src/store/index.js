@@ -123,7 +123,48 @@ export default new Vuex.Store({
       return typeof state.data[0][controller]
     },
     getNumberOfCols: (state) => {
-      return state.colHeaders.length
+      return state.colHeaderNames.length
+    },
+    getNumberOfRows: (state) => {
+      return state.data.length
+    },
+    getBelowMin: (state)=>(min,col)=>{ // return row index where outliers below minimum bound exist
+      var arr = []
+      if(min != '') {
+        for(var row=0; state.data[row]; row++){
+          if(state.data[row][col] < min){
+            arr.push(row)
+          }
+        }
+      } else return []
+      return arr
+    },
+    getAboveMax: (state) => (max,col) => { // return row index where outliers below minimum bound exist
+      var arr = []
+      for(var row=0; state.data[row]; row++){
+        if(state.data[row][col] > max){
+          arr.push(row)
+        }
+      }
+      return arr
+    },
+    getNulls: (state) => (col) => { // return row index where null values appear in the selected column
+      var arr = []
+      for(var row=0; state.data[row]; row++){
+        if(state.data[row][col] == null ){
+          arr.push(row)
+        }
+      }
+      return arr
+    },
+    getReplaceRows: (state) => (col, replaceValues) => {
+      var arr = []
+      for(var row=0; state.data[row]; row++){
+        if(replaceValues.includes(state.data[row][col] )){
+          arr.push(row)
+        }
+      }
+      return arr
     }
   },
   mutations: {

@@ -32,13 +32,25 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   name:'bounds-card',
   props:['controller'],
   data() {
     return{
-      max: null,
-      min: null
+      max: '',
+      min: ''
+    }
+  },
+  computed: {
+    ...mapGetters(['getBelowMin','getAboveMax']) 
+  },
+  watch:{
+    min: function(){
+      this.debouncedBelowMin()
+    },
+    max: function(){
+      this.debouncedAboveMax()
     }
   },
   methods:{
@@ -48,7 +60,24 @@ export default {
         min: this.min,
         max: this.max
       })
+    },
+    belowMin: function(){
+        //highlight rows & cell 
+        console.log(this.min)
+        var rowIndex = this.getBelowMin(this.min,this.controller)
+        this.$root.$emit('highlightRemoveRows', rowIndex);
+    },
+    aboveMax: function(){
+      //highlight rows & cell
+      var rowIndex = this.getBelowMin(this.min,this.controller)     
+      this.$root.$emit('highlightRemoveRows', rowIndex); 
+     
     }
+  },
+  created: function(){
+    var _ = require('lodash')
+    this.debouncedBelowMin = _.debounce(this.belowMin, 500)
+    this.debouncedAboveMax = _.debounce(this.aboveMax, 500)
   }
 }
 </script>

@@ -23,9 +23,52 @@ export default {
       var arr = this.$refs.hotTableComponent.hotInstance.getSelected()
       var sel = this.$refs.hotTableComponent.hotInstance.getColHeader(arr[0][1])
       return sel
+    },
+    highlightRemoveRows: function(rowIndexes){
+      var ncols = this.$store.getters.getNumberOfCols
+     
+      rowIndexes.forEach(rIndex => {
+        for(var col = 0; col < ncols; col++){
+          this.$refs.hotTableComponent.hotInstance.setCellMeta(rIndex,col,'className','HighlightRemoveRow')
+        }
+      })
+      if(rowIndexes == '' ){
+        this.clearHighlight()
+      }
+      
+      this.$refs.hotTableComponent.hotInstance.render()
+    },
+    highlightReplaceRows: function(rowIndexes){
+      var ncols = this.$store.getters.getNumberOfCols
+      
+      rowIndexes.forEach(rIndex => {
+        for(var col = 0; col < ncols; col++){
+          this.$refs.hotTableComponent.hotInstance.setCellMeta(rIndex,col,'className','HighlightReplaceRow')
+        }
+      })
+      if(rowIndexes == '' ){
+        this.clearHighlight()
+      }
+      
+      this.$refs.hotTableComponent.hotInstance.render()
+    },
+    clearHighlight: function() {
+      var nrows = this.$store.getters.getNumberOfRows
+      var ncols = this.$store.getters.getNumberOfCols
+      for(var row = 0; row < nrows; row++){
+        for(var col = 0; col < ncols; col++){
+          this.$refs.hotTableComponent.hotInstance.setCellMeta(row,col,'className','')
+        }
+      }
+      this.$refs.hotTableComponent.hotInstance.render()
     }
   },
-  watch:{
+  mounted() {
+    this.$root.$on('highlightRemoveRows', data => {this.highlightRemoveRows(data)})
+    this.$root.$on('highlightReplaceRows', data => {this.highlightReplaceRows(data)})
+    this.$root.$on('clearHighlight', () => this.clearHighlight())
+  }
+  /*watch:{
     selected:function(newVal){
       console.log("new:" + newVal)
       var headers = this.$store.state.colHeaderNames
@@ -45,12 +88,15 @@ export default {
       
       
     }
-  }
+  }*/
 }
 </script>
 
-<style>
-.area{
-  background-color: aqua;
+<style >
+.handsontable .HighlightRemoveRow{
+  background: red;
+}
+.handsontable .HighlightReplaceRow{
+  background: yellow;
 }
 </style>

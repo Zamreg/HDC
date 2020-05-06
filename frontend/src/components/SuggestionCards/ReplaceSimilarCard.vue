@@ -4,10 +4,10 @@
       Replace similar values?
       <v-radio-group v-model="replaceRadios">
       <v-row dense>
-        <v-radio class="subtitle-1 text--primary" value="MARSHMALLOW" label="Marshmallow to MARSHMALLOW"></v-radio>
+        <v-radio class="subtitle-1 text--primary" :value="valuesToReplace[1]" label="Marshmallow to MARSHMALLOW"></v-radio>
       </v-row>
       <v-row dense id="padding1">
-        <v-radio class="subtitle-1 text--primary" value="Marshmallow" label="MARSHMALLOW to Marshmallow"></v-radio>
+        <v-radio class="subtitle-1 text--primary" :value="valuesToReplace[0]" label="MARSHMALLOW to Marshmallow"></v-radio>
       </v-row>
       <v-row dense>
         <v-radio  class="subtitle-1 text--primary" value="Both" label="Both to:"></v-radio>
@@ -53,7 +53,26 @@ export default {
       replaceVal: null
     }
   },
+  watch:{
+    replaceRadios: function(){
+      var rowIndex
+      this.$root.$emit('clearHighlight');
+      if(this.replaceRadios == "Both"){
+        rowIndex = this.$store.getters.getReplaceRows(this.controller,this.valuesToReplace)
+        this.$root.$emit('highlightReplaceRows', rowIndex);
+      } else if (this.replaceRadios == this.valuesToReplace[1]){
+        rowIndex = this.$store.getters.getReplaceRows(this.controller,[this.valuesToReplace[0]])
+        this.$root.$emit('highlightReplaceRows', rowIndex);
+      } else if (this.replaceRadios == this.valuesToReplace[0]){
+        rowIndex = this.$store.getters.getReplaceRows(this.controller,[this.valuesToReplace[1]])
+        this.$root.$emit('highlightReplaceRows', rowIndex);
+      }
+    }
+  },
   methods:{
+    replace: function(){
+      console.log("hello")
+    },
     clearReplaceRadios: function(){
       this.replaceRadios = null;
     },
@@ -73,7 +92,7 @@ export default {
         })
       }
     }
-  }
+  },
 }
 </script>
 

@@ -52,8 +52,15 @@ export default {
         afterSelectionEnd: () => {
           this.updateModel()
         },
+        /*cells: function (row, col) {
+          var cellProperties = {};
+          var data = this.instance.getData();
+          if (row === 0 || data[row] && data[row][col] === 'readOnly') {
+            cellProperties.readOnly = true;
+          }
+          return cellProperties;
+        },*/
         selectionRanges: 'multiple',
-        //outsideClickDeselects: false,
         columnSorting: true,
         rowHeaders: true,
         width:'100%',

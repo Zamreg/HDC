@@ -44,9 +44,10 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   name: 'null-card',
-  props:['controller'],
+  props:['controller'], //controller = col index
   data: function(){
     return{
       nullRadios: null,
@@ -54,9 +55,22 @@ export default {
     }
   },
   computed:{
+    ...mapGetters(['getNulls']),
     enableText: function(){
       if(this.nullRadios == "Replace") return false;
       else return true;
+    },
+  },
+  watch:{
+    nullRadios: function(){
+      console.log(this.nullRadios)
+      var rowIndex = this.getNulls(this.controller)
+      this.$root.$emit('clearHighlight');
+      if(this.nullRadios == "Remove"){
+        this.$root.$emit('highlightRemoveRows', rowIndex);
+      } else if (this.nullRadios == "Replace"){
+        this.$root.$emit('highlightReplaceRows', rowIndex);
+      }
     },
   },
   methods:{
@@ -76,6 +90,6 @@ export default {
         })
       }
     }
-  }
+  },
 }
 </script>
