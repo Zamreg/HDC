@@ -1,7 +1,7 @@
 <template>
   <v-container fluid fill-height >
-    <hot-table id="table" :key="this.$store.state.changeCounter" :data="data" :colHeaders="headers" ref="hotTableComponent" read-only='true' :settings="settings" v-if="original"/>
-    <hot-table id="table" :key="this.$store.state.changeCounter" :data="data" :colHeaders="headers" ref="hotTableComponent" :settings="settings" v-else/>
+    <hot-table id="table" :key="this.$store.state.changeCounter" :data="data" :colHeaders="headers" ref="hotTableComponentOriginal" read-only='true' :settings="settings" v-if="original"/>
+    <hot-table id="table" :key="this.$store.state.changeCounter" :data="data" :colHeaders="headers" ref="hotTableComponentPrev" :settings="settings" v-else/>
   </v-container>
 </template>
 
@@ -16,12 +16,12 @@ export default {
   },
   methods:{
     getSelected: function(){
-      var arr = this.$refs.hotTableComponent.hotInstance.getSelected()
+      var arr = this.$refs.hotTableComponentPrev.hotInstance.getSelected()
       return arr[0][1]
     },
     getSelectedColHeader: function(){
-      var arr = this.$refs.hotTableComponent.hotInstance.getSelected()
-      var sel = this.$refs.hotTableComponent.hotInstance.getColHeader(arr[0][1])
+      var arr = this.$refs.hotTableComponentPrev.hotInstance.getSelected()
+      var sel = this.$refs.hotTableComponentPrev.hotInstance.getColHeader(arr[0][1])
       return sel
     },
     highlightRemoveRows: function(rowIndexes){
@@ -29,38 +29,38 @@ export default {
      
       rowIndexes.forEach(rIndex => {
         for(var col = 0; col < ncols; col++){
-          this.$refs.hotTableComponent.hotInstance.setCellMeta(rIndex,col,'className','HighlightRemoveRow')
+          this.$refs.hotTableComponentPrev.hotInstance.setCellMeta(rIndex,col,'className','HighlightRemoveRow')
         }
       })
       if(rowIndexes == '' ){
         this.clearHighlight()
       }
       
-      this.$refs.hotTableComponent.hotInstance.render()
+      this.$refs.hotTableComponentPrev.hotInstance.render()
     },
     highlightReplaceRows: function(rowIndexes){
       var ncols = this.$store.getters.getNumberOfCols
       
       rowIndexes.forEach(rIndex => {
         for(var col = 0; col < ncols; col++){
-          this.$refs.hotTableComponent.hotInstance.setCellMeta(rIndex,col,'className','HighlightReplaceRow')
+          this.$refs.hotTableComponentPrev.hotInstance.setCellMeta(rIndex,col,'className','HighlightReplaceRow')
         }
       })
       if(rowIndexes == '' ){
         this.clearHighlight()
       }
       
-      this.$refs.hotTableComponent.hotInstance.render()
+      this.$refs.hotTableComponentPrev.hotInstance.render()
     },
     clearHighlight: function() {
       var nrows = this.$store.getters.getNumberOfRows
       var ncols = this.$store.getters.getNumberOfCols
       for(var row = 0; row < nrows; row++){
         for(var col = 0; col < ncols; col++){
-          this.$refs.hotTableComponent.hotInstance.setCellMeta(row,col,'className','')
+          this.$refs.hotTableComponentPrev.hotInstance.setCellMeta(row,col,'className','')
         }
       }
-      this.$refs.hotTableComponent.hotInstance.render()
+      this.$refs.hotTableComponentPrev.hotInstance.render()
     }
   },
   mounted() {

@@ -47,7 +47,7 @@
       </v-app-bar-nav-icon>
       
 
-      <v-toolbar-title>Humanized Data Cleaning</v-toolbar-title>
+      <v-toolbar-title>Data Cleaning for All</v-toolbar-title>
 
       <v-spacer></v-spacer>
     </v-app-bar>

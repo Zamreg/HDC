@@ -99,6 +99,7 @@ export default {
     },
     updateModel: function(){
       var col = this.$refs.dataTablePrev.getSelected()
+      this.$refs.dataTablePrev.clearHighlight()
       this.$refs.suggestionBar.updateModel(col)
     }
   }
