@@ -64,7 +64,8 @@ export default {
         items: [
           { heading: 'Data Cleaning'},
           { text: 'Home', path: '/', icon: 'mdi-home' },
-          { text: 'Timeline', path: '/timeline', icon: 'mdi-chart-timeline-variant' },          
+          { text: 'Timeline', path: '/timeline', icon: 'mdi-chart-timeline-variant' },
+          { text: 'Import File', path: '/import', icon: 'mdi-paperclip' },                    
           { divider: true }
       ]
     }

@@ -52,14 +52,6 @@ export default {
         afterSelectionEnd: () => {
           this.updateModel()
         },
-        /*cells: function (row, col) {
-          var cellProperties = {};
-          var data = this.instance.getData();
-          if (row === 0 || data[row] && data[row][col] === 'readOnly') {
-            cellProperties.readOnly = true;
-          }
-          return cellProperties;
-        },*/
         selectionRanges: 'multiple',
         columnSorting: true,
         rowHeaders: true,
@@ -69,11 +61,6 @@ export default {
         filters: true,
         dropdownMenu:{
           items:{
-            /*"select_col":{
-              name: function(){
-                return "<input type='checkbox' id='select'/> Select Columnn"
-              }
-            },*/
             "filter_by_condition":{},
             "filter_operators":{},
             "filter_by_condition2":{},
@@ -82,7 +69,8 @@ export default {
           }
         },
         overflow: 'hidden',
-        licenseKey: 'non-commercial-and-evaluation'
+        licenseKey: 'non-commercial-and-evaluation',
+        //exportFile: true
       }
     }
   },
