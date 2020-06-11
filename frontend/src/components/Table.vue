@@ -1,7 +1,8 @@
 <template>
   <v-container fluid fill-height >
-    <hot-table id="table" :key="this.$store.state.changeCounter" :data="data" :colHeaders="headers" ref="hotTableComponentOriginal" read-only='true' :settings="settings" v-if="original"/>
-    <hot-table id="table" :key="this.$store.state.changeCounter" :data="data" :colHeaders="headers" ref="hotTableComponentPrev" :settings="settings" v-else/>
+    <hot-table :key="this.$store.state.changeCounter" :data="data" :colHeaders="headers" ref="hotTableComponentPrev" :settings="settings" v-if="!original"/>
+    <hot-table :key="this.$store.state.changeCounter" :data="data" :colHeaders="headers" ref="hotTableComponentOriginal" read-only='true' :settings="settings" v-else/>
+    
   </v-container>
 </template>
 
@@ -38,23 +39,29 @@ export default {
       
       this.$refs.hotTableComponentPrev.hotInstance.render()
     },
-    highlightReplaceRows: function(rowIndexes){
-      var ncols = this.$store.getters.getNumberOfCols
-      
-      rowIndexes.forEach(rIndex => {
-        for(var col = 0; col < ncols; col++){
-          this.$refs.hotTableComponentPrev.hotInstance.setCellMeta(rIndex,col,'className','HighlightReplaceRow')
+    highlightReplaceRows: function(info){
+      var data = this.$refs.hotTableComponentPrev.hotInstance.getData()
+      var ncols = data[0].length
+      var c = 0
+
+      for(var i = 0; i < data.length; i++){
+        if( info.replace.includes(data[i][info.col]) ) {
+          for(var col = 0; col < ncols; col++){
+            this.$refs.hotTableComponentPrev.hotInstance.setCellMeta(i,col,'className','HighlightReplaceRow')
+          }
+          c++
         }
-      })
-      if(rowIndexes == '' ){
+      }
+      if(c == 0 ){
         this.clearHighlight()
       }
       
       this.$refs.hotTableComponentPrev.hotInstance.render()
     },
     clearHighlight: function() {
-      var nrows = this.$store.getters.getNumberOfRows
-      var ncols = this.$store.getters.getNumberOfCols
+      var data = this.$refs.hotTableComponentPrev.hotInstance.getData()
+      var nrows = data.length
+      var ncols = data[0].length
       for(var row = 0; row < nrows; row++){
         for(var col = 0; col < ncols; col++){
           this.$refs.hotTableComponentPrev.hotInstance.setCellMeta(row,col,'className','')
