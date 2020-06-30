@@ -1,6 +1,18 @@
 <template>
   <div>
-    <v-carousel
+    <hooper v-if="getColDataType(controller) == 'number' "  :key="controller" :settings="hooperSettings">
+      <slide v-for="n in numbersId" :key="n" class="statslide">
+        <NumberCards  :controller="controller" :height="height" :id="n"/>   
+      </slide>
+      <hooper-pagination slot="hooper-addons"></hooper-pagination>
+    </hooper>
+    <hooper v-if="getColDataType(controller) == 'string' "  :key="controller" :settings="hooperSettings">
+      <slide v-for="n in stringsId" :key="n" class="statslide">
+        <StringCards :controller="controller" :height="height" :id="n"/> 
+      </slide>
+      <hooper-pagination slot="hooper-addons"></hooper-pagination>
+    </hooper>
+    <!--v-carousel
       v-model="slide"
       :height="height"
       hide-delimiters
@@ -23,25 +35,34 @@
       <v-carousel-item v-for="n in stringsId" :key="n">
         <StringCards :controller="controller" :height="height" :id="n"/> 
       </v-carousel-item>
-    </v-carousel>  
+    </v-carousel-->  
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import { Hooper, Slide,Pagination as HooperPagination } from 'hooper'
+import 'hooper/dist/hooper.css'
+
 import NumberCards from './StatisticCards/Numbers.vue'
 import StringCards from './StatisticCards/Strings.vue'
 export default {
   props:['height','controller'],
   components:{
     NumberCards,
-    StringCards
+    StringCards,
+    Hooper,
+    Slide,
+    HooperPagination
   },
   data() {
     return{
       numbersId: ['avg'],
       stringsId: ['count'],
-      slide: 0
+      slide: 0,
+      hooperSettings: {
+        itemsToShow: 1
+      }
     }
   },
   computed: {
@@ -49,15 +70,3 @@ export default {
   }
 }
 </script>
-
-<style>
-#codeCol{
-  padding-left: 1.5cm;
-}
-#countCol{
-  padding-right: 1.5cm;
-}
-#code{
-  padding: 0%
-}
-</style>

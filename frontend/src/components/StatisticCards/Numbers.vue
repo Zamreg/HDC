@@ -1,5 +1,5 @@
 <template>
-  <v-theme-provider root>
+  <v-theme-provider root> 
     <CountCard  v-if="id == 'count'" :height="height" :column="controller"/>
     <AvgCard v-if="id == 'avg'" :height="height" :column="controller"/>
   </v-theme-provider>

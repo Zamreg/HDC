@@ -1,5 +1,5 @@
 <template>
-  <v-card id="card" flat outlined height="230" class="card-outer">
+  <v-card id="card" flat outlined :height="this.height" class="card-outer">
     <v-card-text class="subtitle-1 text--primary" align="center">
       Define bounds and remove outliers?
       <v-container>
@@ -35,7 +35,7 @@
 import { mapGetters } from 'vuex'
 export default {
   name:'bounds-card',
-  props:['controller'],
+  props:['controller','height'],
   data() {
     return{
       max: '',

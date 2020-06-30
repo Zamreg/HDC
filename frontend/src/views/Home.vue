@@ -14,6 +14,7 @@
       <Table ref="dataTable" :headers="this.headers" :data='this.rawData' :settings="hotSettings1" original="true"/>
     </v-row>
   </v-container>
+  
 </template>
 
 <script>
@@ -38,7 +39,7 @@ export default {
 
       syncScroll: false,
       selected: null,
-    
+
       hotSettings1: {
         columnSorting: true,
         rowHeaders: true,
@@ -97,27 +98,7 @@ export default {
 
 <style src="../../node_modules/handsontable/dist/handsontable.full.css"></style>
 <style>
-#statsAndSuggestions{
-  height: 20%;
-}
-#dataPrev{
-  height: 40%;
-}
-#originalData{
-  height:40%;
-}
-#padding1{
-  padding-top:10px;
-}
-#padding2{
-  padding: 0;
-  padding-left:32px;
-  padding-right: 100px;
-}
-#syncBox{
-  padding: 0%;
-  padding-left: 50px;
-}
+
 .card-outter {
   position: relative;
   padding-bottom: 50px;

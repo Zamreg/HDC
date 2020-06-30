@@ -203,6 +203,25 @@ export default new Vuex.Store({
       }
       state.dataHistory.push(state.data)
       state.changeCounter++
+    },
+    changeCase (state, payload){
+      for(var row=0; state.data[row]; row++){
+        if(state.data[row][payload.col] != null){
+          if(payload.case == "ul" ){
+            state.data[row][payload.col] = 
+              state.data[row][payload.col].charAt(0).toUpperCase() + 
+              state.data[row][payload.col].slice(1).toLowerCase();
+          } else if(payload.case == "upper"){
+            state.data[row][payload.col] = 
+              state.data[row][payload.col].toUpperCase() 
+          } else if(payload.case == "lower"){
+            state.data[row][payload.col] = 
+              state.data[row][payload.col].toLowerCase() 
+          }
+        }
+      }
+      state.dataHistory.push(state.data)
+      state.changeCounter++
     }
   },
   actions: {
@@ -216,7 +235,10 @@ export default new Vuex.Store({
       state.commit('removeOutliers', payload)
     },
     replaceSimilarValues (state, payload){
-      state.commit('replaceSimilarValues',payload)
+      state.commit('replaceSimilarValues', payload)
+    },
+    changeCase (state,payload) {
+      state.commit('changeCase', payload)
     }
   }
 });

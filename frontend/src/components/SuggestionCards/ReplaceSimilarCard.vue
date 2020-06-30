@@ -1,5 +1,5 @@
 <template>
-  <v-card id="card" flat outlined height="230" class="card-outer">
+  <v-card id="card" flat outlined :height="this.height" class="card-outer">
     <v-card-text class="subtitle-1 text--primary" align="center">
       Replace similar values?
       <v-radio-group v-model="replaceRadios">
@@ -46,7 +46,7 @@
 <script>
 export default {
   name:'replace-card',
-  props:['controller','valuesToReplace'],
+  props:['controller','valuesToReplace','height'],
   data: function(){
     return{
       replaceRadios: null,

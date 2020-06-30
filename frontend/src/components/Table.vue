@@ -1,13 +1,13 @@
 <template>
   <v-container fluid fill-height >
-    <hot-table :key="this.$store.state.changeCounter" :data="data" :colHeaders="headers" ref="hotTableComponentPrev" :settings="settings" v-if="!original"/>
-    <hot-table :key="this.$store.state.changeCounter" :data="data" :colHeaders="headers" ref="hotTableComponentOriginal" read-only='true' :settings="settings" v-else/>
+    <hot-table :key="this.$store.state.changeCounter" :data="data" :colHeaders="headers" :columns="columns" ref="hotTableComponentPrev" :settings="settings" v-if="!original"/>
+    <hot-table :key="this.$store.state.changeCounter" :data="data" :colHeaders="headers" :columns="columns" ref="hotTableComponentOriginal" :settings="settings" read-only='true'  v-else/>
     
   </v-container>
 </template>
 
 <script>
-
+import { mapGetters } from 'vuex'
 import { HotTable } from '@handsontable/vue';
 import 'handsontable'
 export default {
@@ -15,10 +15,30 @@ export default {
   components:{
     HotTable
   },
+  computed:{
+    ...mapGetters(['getColDataType','getNumberOfCols']),
+    columns: function(){
+      var cols = []
+      var ncols = this.getNumberOfCols
+      for(var i=0; i<ncols; i++) {
+        var col = new Object()
+        if(this.getColDataType(i) == "number") {
+          col.type = "numeric"
+        } else {
+          col.type = "text"
+        }
+        cols.push(col)
+      }
+      return cols
+    }
+  },
   methods:{
     getSelected: function(){
       var arr = this.$refs.hotTableComponentPrev.hotInstance.getSelected()
       return arr[0][1]
+    },
+    getSelectedData: function(){
+      return this.$refs.hotTableComponentPrev.hotInstance.getSelected()
     },
     getSelectedColHeader: function(){
       var arr = this.$refs.hotTableComponentPrev.hotInstance.getSelected()

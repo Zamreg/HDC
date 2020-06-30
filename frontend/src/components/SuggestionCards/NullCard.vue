@@ -1,5 +1,5 @@
 <template>
-   <v-card id="card" flat outlined height="230" class="card-outer">
+   <v-card id="card" flat outlined :height="this.height" class="card-outer">
         <v-card-text class="subtitle-1 text--primary" align="center">
           Replace or remove null values?
           <v-radio-group v-model="nullRadios">
@@ -47,7 +47,7 @@
 import { mapGetters } from 'vuex'
 export default {
   name: 'null-card',
-  props:['controller'], //controller = col index
+  props:['controller','height'], //controller = col index
   data: function(){
     return{
       nullRadios: null,
