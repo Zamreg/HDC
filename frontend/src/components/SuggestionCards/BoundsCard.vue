@@ -21,12 +21,6 @@
       >
         Apply
       </v-btn>
-      <v-btn
-        color="black"
-        text
-      >
-        Preview
-      </v-btn>
     </v-card-actions>
   </v-card>
 </template>

@@ -31,7 +31,7 @@ export default {
       return matrix.sort( (a,b) => (a.count > b.count) ? -1: 1).slice(0,6)
     },
     orderedValues: function(){
-      console.log("values:"+this.uniqueValues.map( a => a.val ))
+      //console.log("values:"+this.uniqueValues.map( a => a.val ))
       
       return this.uniqueValues.map( a => a.val )
     },
@@ -40,7 +40,7 @@ export default {
         data: null
       }]
       series.data = this.uniqueValues.map( a => a.count )
-      console.log(series)
+      //console.log(series)
       return series
     }
   }

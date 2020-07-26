@@ -10,6 +10,9 @@
         </slide>
         <slide v-if="controller==3">
           <ReplaceCard :controller="controller" :valuesToReplace="['Marshmallow','MARSHMALLOW']" :height="230"/>
+        </slide>~
+        <slide v-if="controller==1">
+          <ReplaceCard :controller="controller" :valuesToReplace="['\'Huawei\'','\'HUAWEI\'']" :height="230"/>
         </slide>
         <slide v-if="controller==3">
           <NullCard :controller="controller" :height="230"/>
@@ -20,33 +23,22 @@
         <slide v-if="this.getColDataType(controller) == 'string'">
           <SplitCard :controller="controller" :height="230"/>
         </slide>
-        <hooper-pagination slot="hooper-addons"></hooper-pagination>
+        <slide v-if="this.getColDataType(controller) == 'number'">
+          <FilterNumericCard :controller="controller" :height="230"/>
+        </slide>
+        <slide v-if="this.getColDataType(controller) == 'string'">
+          <FilterTextCard :controller="controller" :height="230"/>
+        </slide>
       </hooper>
     </v-col>
-    <!--v-col v-if="controller==4" cols=3>
-      <BoundsCard :controller="controller" :height="230"/>
-    </v-col>
-    <v-col v-if="controller==3" cols=3>
-      <ReplaceCard :controller="controller" :valuesToReplace="['Marshmallow','MARSHMALLOW']" :height="230"/>
-    </v-col>
-    <v-col v-if="controller==3" cols=3>
-      <NullCard :controller="controller" :height="230"/>
-    </v-col>
-    <v-col  v-if="this.getColDataType(controller) == 'string'" cols=3 >
-      <CaseCard :controller="controller" :height="230"/>
-    </v-col>
-    <v-col  v-if="this.getColDataType(controller) == 'string'" cols=3 >
-      <SplitCard :controller="controller" :height="230"/>
-    </v-col-->
   </v-row>
 </template>
 
 
 <script>
 import { mapGetters } from 'vuex'
-import { Hooper, Slide,Pagination as HooperPagination } from 'hooper'
-
-//import 'hooper/dist/hooper.css'
+import { Hooper, Slide} from 'hooper'
+import 'hooper/dist/hooper.css'
 
 import Stats from '@/components/Stats.vue'
 import NullCard from '@/components/SuggestionCards/NullCard.vue'
@@ -54,7 +46,8 @@ import BoundsCard from '@/components/SuggestionCards/BoundsCard.vue'
 import ReplaceCard from '@/components/SuggestionCards/ReplaceSimilarCard.vue'
 import CaseCard from '@/components/SuggestionCards/CaseCard.vue'
 import SplitCard from '@/components/SuggestionCards/SplitCard.vue'
-
+import FilterNumericCard from '@/components/SuggestionCards/FilterNumericCard.vue'
+import FilterTextCard from '@/components/SuggestionCards/FilterTextCard.vue'
 
 export default {
   name:'suggestion-bar',
@@ -66,9 +59,10 @@ export default {
     BoundsCard,
     CaseCard,
     SplitCard,
+    FilterNumericCard,
+    FilterTextCard,
     Hooper,
     Slide,
-    HooperPagination
    
   },
   data: function(){
@@ -77,8 +71,7 @@ export default {
       replaceRadios: null,
       controller: 0,
       hooperSettings: {
-        itemsToShow: 3,
-        shortDrag: true
+        itemsToShow: 3.25
       }
     }
   },

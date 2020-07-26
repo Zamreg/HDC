@@ -1,8 +1,7 @@
 <template>
   <v-container fluid fill-height >
-    <hot-table :key="this.$store.state.changeCounter" :data="data" :colHeaders="headers" :columns="columns" ref="hotTableComponentPrev" :settings="settings" v-if="!original"/>
-    <hot-table :key="this.$store.state.changeCounter" :data="data" :colHeaders="headers" :columns="columns" ref="hotTableComponentOriginal" :settings="settings" read-only='true'  v-else/>
-    
+    <hot-table :key="$store.state.changeCounter" :data="$store.state.data" :colHeaders="$store.state.colHeaders" :columns="columns" ref="hotTableComponentPrev" :settings="settings" v-if="!original"/>
+    <hot-table :key="$store.state.changeCounter" :data="$store.state.data2" :colHeaders="$store.state.colHeaders" :columns="columns" ref="hotTableComponentOriginal" :settings="settings" read-only='true'  v-else/>
   </v-container>
 </template>
 
@@ -11,7 +10,7 @@ import { mapGetters } from 'vuex'
 import { HotTable } from '@handsontable/vue';
 import 'handsontable'
 export default {
-  props: ['headers','data','settings','original','selected'],
+  props: ['settings','original','selected'],
   components:{
     HotTable
   },
@@ -80,6 +79,7 @@ export default {
     },
     clearHighlight: function() {
       var data = this.$refs.hotTableComponentPrev.hotInstance.getData()
+      //console.log(data)
       var nrows = data.length
       var ncols = data[0].length
       for(var row = 0; row < nrows; row++){
@@ -91,31 +91,10 @@ export default {
     }
   },
   mounted() {
-    this.$root.$on('highlightRemoveRows', data => {this.highlightRemoveRows(data)})
-    this.$root.$on('highlightReplaceRows', data => {this.highlightReplaceRows(data)})
-    this.$root.$on('clearHighlight', () => this.clearHighlight())
+    //this.$root.$on('highlightRemoveRows', data => {this.highlightRemoveRows(data)})
+    //this.$root.$on('highlightReplaceRows', data => {this.highlightReplaceRows(data)})
+    //this.$root.$on('clearHighlight', () => this.clearHighlight())
   }
-  /*watch:{
-    selected:function(newVal){
-      console.log("new:" + newVal)
-      var headers = this.$store.state.colHeaderNames
-      var len = this.$store.state.colHeaderNames.length
-      var col1 = null, col2 = null
-      for(var i = 0; i < newVal.length ; i++){
-        for(var j = 0; j < len ; j++){
-          if(newVal[i] == headers[j]){
-            if(col1 == null) col1 =j
-            else col2 = j
-          }
-        }
-      }
-      console.log("col1:" + col1 +",col2:" + col2)
-      if (col2 != null) this.$refs.hotTableComponent.hotInstance.selectColumns(col1, col2)
-      else this.$refs.hotTableComponent.hotInstance.selectColumns(col1)
-      
-      
-    }
-  }*/
 }
 </script>
 

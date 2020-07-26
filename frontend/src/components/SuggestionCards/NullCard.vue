@@ -28,12 +28,6 @@
           <v-btn
             color="black"
             text
-          >
-            Preview
-          </v-btn>
-          <v-btn
-            color="black"
-            text
             v-on:click="clearNullRadios()"
             v-if="nullRadios!=null"
           >
@@ -61,7 +55,7 @@ export default {
       else return true;
     },
   },
-  watch:{
+  /*watch:{
     nullRadios: function(){
       console.log(this.nullRadios)
       var rowIndex = this.getNulls(this.controller)
@@ -72,7 +66,7 @@ export default {
         this.$root.$emit('highlightReplaceRows', rowIndex);
       }
     },
-  },
+  },*/
   methods:{
     clearNullRadios: function(){
       this.nullRadios = null

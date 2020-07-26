@@ -28,12 +28,6 @@
       <v-btn
         color="black"
         text
-      >
-        Preview
-      </v-btn>
-      <v-btn
-        color="black"
-        text
         v-on:click="clearReplaceRadios()"
         v-if="replaceRadios!=null"
       >

@@ -1,17 +1,35 @@
 <template>
   <v-container fluid fill-width>
-    <suggestion-bar :headers="this.headers" ref="suggestionBar"/>
+    <suggestion-bar :headers="$store.state.colHeaders" ref="suggestionBar"/>
     <v-row id="dataPrev">
-      <Table ref="dataTablePrev" :headers="this.headers" :data='this.rawData' :settings="hotSettingsPrev" :selected="selectedColumns"/>
+      <Table ref="dataTablePrev" :key="key" :settings="hotSettingsPrev" :selected="selectedColumns"/>
     </v-row>
     <v-row align="center" justify="center" id="syncBox">
-      <Dropdown @changeSelected="changeSelectedColumns"/>
-      <v-col cols=2>
+      <!--Dropdown @changeSelected="changeSelectedColumns"/>
+      <v-col cols=3>
         <v-checkbox color="grey darken-3" id="checkbox" label="Synchronized Scrolling" v-model="syncScroll"/>
+      </v-col-->
+      <v-col cols=3>
+        <v-btn
+          color="black"
+          text
+          @click="applyTrans()"
+        >
+          Apply to Data
+        </v-btn>
+      </v-col>
+      <v-col cols=3>
+        <v-btn
+          color="black"
+          text
+          @click="resetTrans()"
+        >
+          Reset Transformations
+        </v-btn>
       </v-col>
     </v-row>
     <v-row id="originalData">
-      <Table ref="dataTable" :headers="this.headers" :data='this.rawData' :settings="hotSettings1" original="true"/>
+      <Table ref="dataTable" :key="key" :settings="hotSettings1" original="true"/>
     </v-row>
   </v-container>
   
@@ -20,25 +38,23 @@
 <script>
 import Table from '@/components/Table.vue'
 import SuggestionBar from '@/components/SuggestionBar.vue'
-import Dropdown from '@/components/SelectMenu.vue'
+//import Dropdown from '@/components/SelectMenu.vue'
 
 export default {
   name: 'home',
   components:{
     Table,
-    Dropdown,
+    //Dropdown,
     SuggestionBar
-    //StatsCard
   },
   data: function() {
     return {
       selectedColumns:[],
-
-      rawData: this.$store.state.data,
-      headers: this.$store.state.colHeaders,
+      
 
       syncScroll: false,
       selected: null,
+      key:0,
 
       hotSettings1: {
         columnSorting: true,
@@ -47,7 +63,18 @@ export default {
         stretchH: 'all',
         height: '255',
         overflow: 'hidden',
+        filters: true,
+        dropdownMenu:{
+          items:{
+            "filter_by_condition":{},
+            "filter_operators":{},
+            "filter_by_condition2":{},
+            "filter_by_value":{},
+            "filter_action_bar":{}
+          }
+        },
         licenseKey: 'non-commercial-and-evaluation'
+        
       },
       hotSettingsPrev: {
         afterSelectionEnd: () => {
@@ -90,6 +117,14 @@ export default {
       var col = this.$refs.dataTablePrev.getSelected()
       this.$refs.dataTablePrev.clearHighlight()
       this.$refs.suggestionBar.updateModel(col)
+    },
+    applyTrans: function(){
+      this.$store.dispatch('applyTrans')
+      
+    },
+    resetTrans: function(){
+      this.$store.dispatch('resetTrans')
+      
     }
   }
 }
