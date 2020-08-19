@@ -6,7 +6,7 @@
       <v-row dense>
         <v-radio class="subtitle-1 text--primary" :value="valuesToReplace[1]" :label="label1"></v-radio>
       </v-row>
-      <v-row dense id="padding1">
+      <v-row dense >
         <v-radio class="subtitle-1 text--primary" :value="valuesToReplace[0]" :label="label2"></v-radio>
       </v-row>
       <v-row dense>
@@ -66,19 +66,19 @@ export default {
     },*/
     replaceRadios: function(){
       var send = {replace: null, col: null}
-      this.$root.$emit('clearHighlight');
+      //this.$root.$emit('clearHighlight');
       if(this.replaceRadios == "Both"){
         send.replace = this.valuesToReplace
         send.col = this.controller
-        this.$root.$emit('highlightReplaceRows', send);
+        //this.$root.$emit('highlightReplaceRows', send);
       } else if (this.replaceRadios == this.valuesToReplace[1]){
         send.replace = [this.valuesToReplace[0]]
         send.col = this.controller
-        this.$root.$emit('highlightReplaceRows', send);
+        //this.$root.$emit('highlightReplaceRows', send);
       } else if (this.replaceRadios == this.valuesToReplace[0]){
         send.replace = [this.valuesToReplace[1]]
         send.col = this.controller
-        this.$root.$emit('highlightReplaceRows', send);
+        //this.$root.$emit('highlightReplaceRows', send);
       }
     }
   },

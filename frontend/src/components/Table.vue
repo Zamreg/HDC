@@ -45,32 +45,32 @@ export default {
       return sel
     },
     highlightRemoveRows: function(rowIndexes){
-      var ncols = this.$store.getters.getNumberOfCols
+      //var ncols = this.$store.getters.getNumberOfCols
      
-      rowIndexes.forEach(rIndex => {
+      /*rowIndexes.forEach(rIndex => {
         for(var col = 0; col < ncols; col++){
           this.$refs.hotTableComponentPrev.hotInstance.setCellMeta(rIndex,col,'className','HighlightRemoveRow')
         }
-      })
+      })*/
       if(rowIndexes == '' ){
         this.clearHighlight()
       }
       
       this.$refs.hotTableComponentPrev.hotInstance.render()
     },
-    highlightReplaceRows: function(info){
-      var data = this.$refs.hotTableComponentPrev.hotInstance.getData()
-      var ncols = data[0].length
+    highlightReplaceRows: function(/*info*/){
+      //var data = this.$refs.hotTableComponentPrev.hotInstance.getData()
+      //var ncols = data[0].length
       var c = 0
 
-      for(var i = 0; i < data.length; i++){
+      /*for(var i = 0; i < data.length; i++){
         if( info.replace.includes(data[i][info.col]) ) {
           for(var col = 0; col < ncols; col++){
             this.$refs.hotTableComponentPrev.hotInstance.setCellMeta(i,col,'className','HighlightReplaceRow')
           }
           c++
         }
-      }
+      }*/
       if(c == 0 ){
         this.clearHighlight()
       }

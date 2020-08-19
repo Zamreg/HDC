@@ -5,12 +5,14 @@
         <NumberCards  :controller="controller" :height="height" :id="n"/>   
       </slide>
       <hooper-pagination slot="hooper-addons"></hooper-pagination>
+      <hooper-navigation slot="hooper-addons"></hooper-navigation>
     </hooper>
     <hooper v-if="getColDataType(controller) == 'string' "  :key="controller" :settings="hooperSettings">
       <slide v-for="n in stringsId" :key="n" class="statslide">
         <StringCards :controller="controller" :height="height" :id="n"/> 
       </slide>
       <hooper-pagination slot="hooper-addons"></hooper-pagination>
+      <hooper-navigation slot="hooper-addons"></hooper-navigation>
     </hooper>
     <!--v-carousel
       v-model="slide"
@@ -41,7 +43,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { Hooper, Slide,Pagination as HooperPagination } from 'hooper'
+import { Hooper, Slide,Pagination as HooperPagination,Navigation as HooperNavigation } from 'hooper'
 import 'hooper/dist/hooper.css'
 
 import NumberCards from './StatisticCards/Numbers.vue'
@@ -53,15 +55,18 @@ export default {
     StringCards,
     Hooper,
     Slide,
-    HooperPagination
+    HooperPagination,
+    HooperNavigation
   },
   data() {
     return{
-      numbersId: ['avg'],
+      numbersId: ['avg','count'],
       stringsId: ['count'],
       slide: 0,
       hooperSettings: {
-        itemsToShow: 1
+        itemsToShow: 1,
+        mouseDrag: false,
+        keysControl: false
       }
     }
   },
@@ -70,3 +75,10 @@ export default {
   }
 }
 </script>
+
+<style>
+#statsCard{
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+</style>

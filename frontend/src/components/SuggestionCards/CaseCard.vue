@@ -3,13 +3,13 @@
     <v-card-text class="subtitle-1 text--primary" align="center">
       Normalize String Case
       <v-radio-group v-model="radios">
-      <v-row dense>
+      <v-row dense class="paddedRow" >
         <v-radio class="subtitle-1 text--primary" value="upper" label="All Uppercase"></v-radio>
       </v-row>
-      <v-row dense id="padding1">
+      <v-row dense  >
         <v-radio class="subtitle-1 text--primary" value="lower" label="All Lowercase"></v-radio>
       </v-row>
-      <v-row dense id="padding1">
+      <v-row dense class="paddedRow">
         <v-radio  class="subtitle-1 text--primary" value="ul" label="First uppercase then lowercase"></v-radio>
       </v-row>
       </v-radio-group>
@@ -77,3 +77,9 @@ export default {
   }
 }
 </script>
+
+<style>
+.v-radio{
+  padding-left: 0.7cm;
+}
+</style>

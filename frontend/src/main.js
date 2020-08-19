@@ -7,7 +7,8 @@ import store from './store'
 import '@mdi/font/css/materialdesignicons.css'
 import 'vuetify/dist/vuetify.min.css'
 
-//window._ = require('lodash');
+import VuePapaParse from 'vue-papa-parse'
+Vue.use(VuePapaParse)
 
 new Vue({
   router,

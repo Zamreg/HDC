@@ -1,7 +1,7 @@
 <template>
   <v-card flat outlined :height="height">
     <v-card-title class="subtitle-1 text--primary justify-center">
-      <span>Filter and Drop Matches</span>
+      <span>Find and Drop Matches</span>
     </v-card-title>
     <v-window v-model="step">
       <v-window-item :value="1">

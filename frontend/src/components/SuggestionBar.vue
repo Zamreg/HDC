@@ -5,20 +5,21 @@
     </v-col>
     <v-col cols=9>
       <hooper :settings="hooperSettings">
-        <slide v-if="controller==4">
-          <BoundsCard :controller="controller" :height="230"/>
-        </slide>
-        <slide v-if="controller==3">
+
+        <!--slide v-if="controller==3">
           <ReplaceCard :controller="controller" :valuesToReplace="['Marshmallow','MARSHMALLOW']" :height="230"/>
-        </slide>~
+        </slide>
         <slide v-if="controller==1">
           <ReplaceCard :controller="controller" :valuesToReplace="['\'Huawei\'','\'HUAWEI\'']" :height="230"/>
+        </slide-->
+        <slide v-if="this.getColDataType(controller) == 'number'">
+          <BoundsCard :controller="controller" :height="230"/>
         </slide>
-        <slide v-if="controller==3">
+        <slide v-if="this.getNullControllers.includes(controller)">
           <NullCard :controller="controller" :height="230"/>
         </slide>
         <slide v-if="this.getColDataType(controller) == 'string'">
-          <CaseCard :controller="controller" :height="230"/>
+          <FindReplace :controller="controller" :height="230"/>
         </slide>
         <slide v-if="this.getColDataType(controller) == 'string'">
           <SplitCard :controller="controller" :height="230"/>
@@ -29,6 +30,10 @@
         <slide v-if="this.getColDataType(controller) == 'string'">
           <FilterTextCard :controller="controller" :height="230"/>
         </slide>
+        <slide v-if="this.getColDataType(controller) == 'string'">
+          <CaseCard :controller="controller" :height="230"/>
+        </slide>
+        <hooper-navigation slot="hooper-addons"></hooper-navigation>
       </hooper>
     </v-col>
   </v-row>
@@ -37,33 +42,38 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { Hooper, Slide} from 'hooper'
+import { Hooper, Slide, Navigation as HooperNavigation} from 'hooper'
 import 'hooper/dist/hooper.css'
 
 import Stats from '@/components/Stats.vue'
-import NullCard from '@/components/SuggestionCards/NullCard.vue'
-import BoundsCard from '@/components/SuggestionCards/BoundsCard.vue'
-import ReplaceCard from '@/components/SuggestionCards/ReplaceSimilarCard.vue'
+
 import CaseCard from '@/components/SuggestionCards/CaseCard.vue'
 import SplitCard from '@/components/SuggestionCards/SplitCard.vue'
 import FilterNumericCard from '@/components/SuggestionCards/FilterNumericCard.vue'
 import FilterTextCard from '@/components/SuggestionCards/FilterTextCard.vue'
 
+import NullCard from '@/components/SuggestionCards/NullCard.vue'
+import FindReplace from '@/components/SuggestionCards/FindReplace.vue'
+import BoundsCard from '@/components/SuggestionCards/BoundsCard.vue'
+/*import ReplaceCard from '@/components/SuggestionCards/ReplaceSimilarCard.vue'
+*/
 export default {
   name:'suggestion-bar',
   props:['headers'],
   components:{
     Stats,
-    NullCard,
-    ReplaceCard,
-    BoundsCard,
     CaseCard,
     SplitCard,
     FilterNumericCard,
     FilterTextCard,
     Hooper,
     Slide,
-   
+    HooperNavigation,
+    NullCard,
+    FindReplace,
+    BoundsCard,
+    /*ReplaceCard,
+    */
   },
   data: function(){
     return{
@@ -71,12 +81,14 @@ export default {
       replaceRadios: null,
       controller: 0,
       hooperSettings: {
-        itemsToShow: 3.25
+        itemsToShow: 3.25,
+        mouseDrag: false,
+        keysControl: false
       }
     }
   },
   computed: {
-    ...mapGetters(['getColDataType']) //getColDataType(controller)
+    ...mapGetters(['getColDataType','getNullControllers']) //getColDataType(controller)
   },
   methods:{
     clearReplaceRadios: function(){
@@ -104,9 +116,17 @@ export default {
 .hooper-indicator {
   background-color: gray;
 }
+.hooper-next, .hooper-prev {
+  padding: 0.3cm;
+}
 .hooper:focus{ outline:none; }
-.hooper-next:focus{ outline: none; }
-.hooper-prev:focus{ outline: none; }
+
+.hooper-next:focus{ 
+  outline: none;
+}
+.hooper-prev:focus{ 
+  outline: none; 
+}
 
 #card{
   overflow-y: auto;

@@ -1,6 +1,6 @@
 <template>
   <v-container fluid fill-width>
-    <suggestion-bar :headers="$store.state.colHeaders" ref="suggestionBar"/>
+    <suggestion-bar :key="$store.state.changeCounter" :headers="$store.state.colHeaders" ref="suggestionBar"/>
     <v-row id="dataPrev">
       <Table ref="dataTablePrev" :key="key" :settings="hotSettingsPrev" :selected="selectedColumns"/>
     </v-row>
@@ -50,7 +50,6 @@ export default {
   data: function() {
     return {
       selectedColumns:[],
-      
 
       syncScroll: false,
       selected: null,
@@ -74,7 +73,6 @@ export default {
           }
         },
         licenseKey: 'non-commercial-and-evaluation'
-        
       },
       hotSettingsPrev: {
         afterSelectionEnd: () => {
@@ -89,6 +87,7 @@ export default {
         filters: true,
         dropdownMenu:{
           items:{
+            "remove_col":{},
             "filter_by_condition":{},
             "filter_operators":{},
             "filter_by_condition2":{},
@@ -98,7 +97,6 @@ export default {
         },
         overflow: 'hidden',
         licenseKey: 'non-commercial-and-evaluation',
-        //exportFile: true
       }
     }
   },

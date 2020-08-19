@@ -1,4 +1,3 @@
-
 import Vue from 'vue'
 import Vuex from 'vuex'
 import _ from 'lodash'
@@ -163,13 +162,22 @@ export default new Vuex.Store({
       return arr
     },
     getNulls: (state) => (col) => { // return row index where null values appear in the selected column
-      var arr = []
-      for(var row=0; state.data[row]; row++){
-        if(state.data[row][col] == null ){
-          arr.push(row)
-        }
+      var v = []
+      var i = 0
+      while ( i !=-1){
+        i=_.findIndex(state.data,function(array){
+          if (array[col] == null && array[col] == '') return true
+          else return false
+        })
+        v.push(i)
       }
-      return arr
+      /*var v = []
+      for(var row=0; state.data[row]; row++){
+        if(state.data[row][col] == null || state.data[row][col] == '' ){
+          v.push(row)
+        }
+      }*/
+      return v
     },
     getReplaceRows: (state) => (col, replaceValues) => { //return row index where values to replace appear in the selected column
       var arr = []
@@ -179,31 +187,45 @@ export default new Vuex.Store({
         }
       }
       return arr
+    },
+    getNullControllers: (state) => {
+      var cols = state.colHeaders.length
+      var nullcols = new Array()
+      for(var c = 0; c<cols;c++){
+        _.each(state.data, function(array){
+          if (array[c] == null || array[c] == '') {
+            nullcols.push(c)
+            return false
+          }
+        })
+      }
+      console.log(nullcols)
+      return nullcols
     }
   },
   mutations: {
     init(state,payload){
-      state.colHeaders = _.cloneDeep(payload.headers)
+      state.colHeaders = payload.headers
       state.data = _.cloneDeep(payload.data)
       state.data2 = _.cloneDeep(payload.data)
-      state.dataHistory[0] = _.cloneDeep(payload.data)
+      //state.dataHistory[0] = _.cloneDeep(payload.data)
       state.changeCounter = 0
     },
+    update(state){
+      state.changeCounter++
+    },
     replaceNull (state, payload) {
-      for(var row=0; state.data[row]; row++){
-        if(state.data[row][payload.col] == '' || state.data[row][payload.col] == null ){
-          state.data[row][payload.col] = payload.val
-        }
-      }
+      _.forEach(state.data,function(row){
+        if(row[payload.col] == null || row[payload.col] == '') row[payload.col] = payload.val 
+      })
       state.dataHistory.push(state.data)
       state.changeCounter++
     },
     removeNull (state, payload) {
-      for(var row=0; state.data[row]; row++){
-        if(state.data[row][payload.col] == '' || state.data[row][payload.col] == null ){
-          state.data.splice(row,1)
-        }
-      }
+      _.remove(state.data, function(array){
+        if (array[payload.col] == null || array[payload.col] == '') return true
+        else return false
+      })  
       state.dataHistory.push(state.data)
       state.changeCounter++
     },
@@ -278,18 +300,19 @@ export default new Vuex.Store({
       state.dataHistory.push(state.data)
       state.changeCounter++
     },
-    applyTrans(state){
-      console.log(state.changeCounter)
-      console.log("b4state.data2")
-      console.log(state.data2)
-
-      state.data2 = _.cloneDeep(state.data)
-
-      console.log("state.data2")
-      console.log(state.data2)
-
+    findReplace (state,payload){
+      var rows = state.data.length
+      for(var j = 0; j< rows; j++){
+        if(state.data[j][payload.col] == payload.val) {
+          state.data[j][payload.col] = payload.rep
+        }
+      }
+      state.dataHistory.push(state.data)
       state.changeCounter++
-      console.log(state.changeCounter)
+    },
+    applyTrans(state){
+      state.data2 = _.cloneDeep(state.data)
+      state.changeCounter++
     },
     resetTrans(state){
       state.data = _.cloneDeep(state.data2)
@@ -301,6 +324,9 @@ export default new Vuex.Store({
   actions: {
     init(state,payload){
       state.commit('init',payload)
+    },
+    update(state){
+      state.commit('update')
     },
     removeOutliers (state, payload){
       state.commit('removeOutliers',payload)
@@ -319,6 +345,9 @@ export default new Vuex.Store({
     },
     splitByChar (state,payload) {
       state.commit('splitByChar', payload)
+    },
+    findReplace (state,payload) {
+      state.commit('findReplace',payload)
     },
     applyTrans (state){
       state.commit('applyTrans')

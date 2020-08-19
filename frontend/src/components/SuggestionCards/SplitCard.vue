@@ -1,11 +1,13 @@
 <template>
   <v-card flat outlined :height="this.height">
-    <v-card-title class=" subtitle-1 text--primary justify-center">Split on First Instance</v-card-title>
-    <v-card-text class="text--primary body-1">
-      <v-text-field  label="Character to split by:" placeholder="Example: '\'" v-model="splitChar"></v-text-field>
+    <v-card-text class="subtitle-1 text--primary" align="center">
+      Split on First Instance
+      <v-container fluid fill-width >
+        <v-text-field  single-line dense label="Character to split by:" placeholder="Example: '\'" v-model="splitChar"></v-text-field>
+      </v-container>
       <v-row>
-        <v-col><v-text-field dense label="First Column Name:" v-model="column1" ></v-text-field></v-col>
-        <v-col><v-text-field dense label="Second Column Name:" v-model="column2" ></v-text-field></v-col>
+        <v-col><v-text-field single-line dense label="First Column Name:" v-model="column1" ></v-text-field></v-col>
+        <v-col><v-text-field single-line dense label="Second Column Name:" v-model="column2" ></v-text-field></v-col>
       </v-row>
     </v-card-text>
     <v-card-actions class="card-actions">

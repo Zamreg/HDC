@@ -12,7 +12,7 @@
             </v-col>
           </v-row>
           </v-radio-group>
-          <v-container fluid fill-width id="padding2">
+          <v-container fluid fill-width >
           <v-text-field single-line dense height="29" flat label="Replace" :disabled="enableText" v-model="replaceVal"></v-text-field>
           </v-container>
         </v-card-text>
@@ -54,6 +54,9 @@ export default {
       if(this.nullRadios == "Replace") return false;
       else return true;
     },
+    nullRows: function(){
+      return this.getNulls(this.controller)
+    }
   },
   /*watch:{
     nullRadios: function(){
@@ -76,11 +79,13 @@ export default {
       if(this.nullRadios=="Replace"){
         this.$store.dispatch('replaceNull',{
           col: this.controller,
+          rows: this.nullRows,
           val: this.replaceVal
         })
       } else if(this.nullRadios=="Remove"){
         this.$store.dispatch('removeNull',{
-          col: this.controller
+          col: this.controller,
+          rows: this.nullRows
         })
       }
     }

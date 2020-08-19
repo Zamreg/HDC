@@ -1,4 +1,4 @@
-<template>
+<!--template>
   <v-container fluid fill-width>
     
     <v-row id="dataPrev">
@@ -165,4 +165,4 @@ export default {
   position: absolute;
   bottom: 0;
 }
-</style>
+</style-->

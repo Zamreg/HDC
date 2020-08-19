@@ -113,7 +113,18 @@ export default {
   methods:{
     getFiles: function(){
       if(this.files != null){
-        const reader = new FileReader()
+        this.$papa.parse(this.files[0],{
+          fastMode: true,
+          //skipEmptyLines: true,
+          complete: (result) => {
+            this.data = _.cloneDeep(result.data)
+            this.update++
+          }
+        })
+       
+      }
+    },
+      /*const reader = new FileReader()
         reader.onload = e => {
           this.originaldata = this.parseCSV2Arr(e.target.result)
           this.data = _.cloneDeep(this.originaldata)
@@ -129,9 +140,14 @@ export default {
 
       for (var i = 0; i < lines.length; i++) {
         data[i] = lines[i].split(",")
+        if(data[i].includes('')){
+          for(var j = 0; j < data[i].length; j++){
+            if(data[i][j] == '') data[i][j]=null
+          }
+        }
       }
       return data
-    },
+    },*/
     decStep: function(){
       console.log(this.originaldata)
       console.log(this.data)
