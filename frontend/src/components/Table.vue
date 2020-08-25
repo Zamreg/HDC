@@ -1,7 +1,7 @@
 <template>
   <v-container fluid fill-height >
-    <hot-table :key="$store.state.changeCounter" :data="$store.state.data" :colHeaders="$store.state.colHeaders" :columns="columns" ref="hotTableComponentPrev" :settings="settings" v-if="!original"/>
-    <hot-table :key="$store.state.changeCounter" :data="$store.state.data2" :colHeaders="$store.state.colHeaders" :columns="columns" ref="hotTableComponentOriginal" :settings="settings" read-only='true'  v-else/>
+    <hot-table :key="$store.state.changeCounter" :data="$store.state.data" :colHeaders="$store.state.colHeaders" :columns="$store.state.columns" ref="hotTableComponentPrev" :settings="settings" v-if="!original"/>
+    <hot-table :key="$store.state.changeCounter" :data="$store.state.data2" :colHeaders="$store.state.colHeaders2" :columns="$store.state.columns2" ref="hotTableComponentOriginal" :settings="settings" read-only='true'  v-else/>
   </v-container>
 </template>
 
@@ -15,23 +15,17 @@ export default {
     HotTable
   },
   computed:{
-    ...mapGetters(['getColDataType','getNumberOfCols']),
-    columns: function(){
-      var cols = []
-      var ncols = this.getNumberOfCols
-      for(var i=0; i<ncols; i++) {
-        var col = new Object()
-        if(this.getColDataType(i) == "number") {
-          col.type = "numeric"
-        } else {
-          col.type = "text"
-        }
-        cols.push(col)
-      }
-      return cols
-    }
+    ...mapGetters(['getColDataType','getNumberOfCols','getColumns','getColumns2']),
   },
   methods:{
+    removeCols: function(){
+      if(this.$store.state.colHeaders.length != this.$refs.hotTableComponentPrev.hotInstance.countCols()){
+         this.$refs.hotTableComponentPrev.hotInstance.columns.splice(this.$store.state.colHeaders.length-1)
+      }
+    },
+    updateHiddenCols: function(){
+      this.$refs.hotTableComponent.hotInstance.alter('remove_col',this.$store.state.colHeaders.length)
+    },
     getSelected: function(){
       var arr = this.$refs.hotTableComponentPrev.hotInstance.getSelected()
       return arr[0][1]
@@ -79,7 +73,6 @@ export default {
     },
     clearHighlight: function() {
       var data = this.$refs.hotTableComponentPrev.hotInstance.getData()
-      //console.log(data)
       var nrows = data.length
       var ncols = data[0].length
       for(var row = 0; row < nrows; row++){
@@ -94,6 +87,7 @@ export default {
     //this.$root.$on('highlightRemoveRows', data => {this.highlightRemoveRows(data)})
     //this.$root.$on('highlightReplaceRows', data => {this.highlightReplaceRows(data)})
     //this.$root.$on('clearHighlight', () => this.clearHighlight())
+    this.$root.$on('updateHiddenCols', () => this.updateHiddenCols())
   }
 }
 </script>

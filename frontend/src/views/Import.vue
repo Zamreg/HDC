@@ -226,10 +226,20 @@ export default {
         }
       }
     },
+    typeCols: function(){
+      var cols = []
+      _.map(this.data[0], function(ele){
+        if(!isNaN(ele)) cols.push({type: 'numeric'})
+        else cols.push({type: 'text'})
+      })
+      return cols
+    },
     apply: function(){
+      var cols = this.typeCols()
       this.$store.dispatch('init',{
         headers: this.headers,
-        data: this.data
+        data: this.data,
+        cols: cols
       })
       this.$router.push("/")
       

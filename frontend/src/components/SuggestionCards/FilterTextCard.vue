@@ -1,7 +1,7 @@
 <template>
   <v-card flat outlined :height="height">
     <v-card-title class="subtitle-1 text--primary justify-center">
-      <span>Find and Drop Matches</span>
+      <span>Find and Remove Matches</span>
     </v-card-title>
     <v-window v-model="step">
       <v-window-item :value="1">
@@ -99,6 +99,7 @@
             job: this.model,
           })
         } else if (this.oneVal.includes(this.model) ){
+          console.log("Single Filter")
           this.$store.dispatch('singleFilter',{
             col: this.controller,
             job: this.model,

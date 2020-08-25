@@ -78,6 +78,9 @@ export default {
         afterSelectionEnd: () => {
           this.updateModel()
         },
+        afterChange: () => {
+          this.$refs.dataTablePrev.removeCols()
+        },
         selectionRanges: 'multiple',
         columnSorting: true,
         rowHeaders: true,
@@ -87,7 +90,13 @@ export default {
         filters: true,
         dropdownMenu:{
           items:{
-            "remove_col":{},
+            'remove_column':{
+              name: "Remove Column",
+              callback:  (key,options) => {
+                this.$store.dispatch("removeCol",options)
+              }
+            },
+            '---------':{},
             "filter_by_condition":{},
             "filter_operators":{},
             "filter_by_condition2":{},

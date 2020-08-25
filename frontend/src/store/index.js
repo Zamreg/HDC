@@ -7,6 +7,25 @@ export default new Vuex.Store({
   state: {
     changeCounter:0,
     colHeaders: ['Model','Brand','OS_Version','Codename','Battery_level','Country_code','Time_zone'],
+    colHeaders2: ['Model','Brand','OS_Version','Codename','Battery_level','Country_code','Time_zone'],
+    columns:[
+      {type:'text'},
+      {type:'text'},
+      {type:'text'},
+      {type:'text'},
+      {type:'numeric'},
+      {type:'text'},
+      {type:'text'}
+    ],
+    columns2:[
+      {type:'text'},
+      {type:'text'},
+      {type:'text'},
+      {type:'text'},
+      {type:'numeric'},
+      {type:'text'},
+      {type:'text'}
+    ],
     data:[
       ["'VS500PP'","'lge'","'6.0.1'",'Marshmallow',88,'us','America/Chicago'],
       ["'AO5510'","'YU'","'5.1.1'",'Lollipop',59,'pt','Europe/Lisbon'],
@@ -195,17 +214,19 @@ export default new Vuex.Store({
         _.each(state.data, function(array){
           if (array[c] == null || array[c] == '') {
             nullcols.push(c)
-            return false
           }
         })
       }
-      console.log(nullcols)
+      //console.log(nullcols)
       return nullcols
     }
   },
   mutations: {
     init(state,payload){
       state.colHeaders = payload.headers
+      state.colHeaders2 = payload.headers
+      state.columns = payload.cols
+      state.columns2 = payload.cols
       state.data = _.cloneDeep(payload.data)
       state.data2 = _.cloneDeep(payload.data)
       //state.dataHistory[0] = _.cloneDeep(payload.data)
@@ -214,6 +235,20 @@ export default new Vuex.Store({
     update(state){
       state.changeCounter++
     },
+    removeCol(state,payload){
+
+      if(payload[0].start.col == payload[0].end.col){
+        _.map(state.data, function(array){ 
+          _.pullAt(array,payload[0].start.col)
+        })
+        _.pullAt(state.colHeaders,payload[0].start.col)
+        _.pullAt(state.columns,payload[0].start.col)
+      }
+
+      state.dataHistory.push(state.data)
+      state.changeCounter++
+    },
+    //Null Ops
     replaceNull (state, payload) {
       _.forEach(state.data,function(row){
         if(row[payload.col] == null || row[payload.col] == '') row[payload.col] = payload.val 
@@ -229,6 +264,38 @@ export default new Vuex.Store({
       state.dataHistory.push(state.data)
       state.changeCounter++
     },
+    removeBelow (state, payload) {
+      _.remove(state.data, function(array){
+        if (array[payload.col] < payload.val) return true
+        else return false
+      })  
+      state.dataHistory.push(state.data)
+      state.changeCounter++
+    },
+    removeBelowEq (state, payload) {
+      _.remove(state.data, function(array){
+        if (array[payload.col] <= payload.val) return true
+        else return false
+      })  
+      state.dataHistory.push(state.data)
+      state.changeCounter++
+    },
+    removeAbove (state, payload) {
+      _.remove(state.data, function(array){
+        if (array[payload.col] > payload.val) return true
+        else return false
+      })  
+      state.dataHistory.push(state.data)
+      state.changeCounter++
+    },
+    removeAboveEq (state, payload) {
+      _.remove(state.data, function(array){
+        if (array[payload.col] >= payload.val) return true
+        else return false
+      })  
+      state.dataHistory.push(state.data)
+      state.changeCounter++
+    },
     keepNull(state, payload) {
       for(var row=0; state.data[row]; row++){
         if(state.data[row][payload.col] != null){
@@ -238,6 +305,16 @@ export default new Vuex.Store({
       state.dataHistory.push(state.data)
       state.changeCounter++
     },
+    //Single Filter
+    removeDiff(state, payload) {
+      _.remove(state.data, function(array){
+        if (array[payload.col] != payload.val) return true
+        else return false
+      })  
+      state.dataHistory.push(state.data)
+      state.changeCounter++
+    },
+    //Other
     replaceSimilarValues (state, payload){
       for(var row=0; state.data[row]; row++){
         if(payload.toReplace.includes( state.data[row][payload.col] )){
@@ -269,13 +346,17 @@ export default new Vuex.Store({
     splitByChar(state, payload){
       state.colHeaders[payload.col] = payload.column1
       state.colHeaders.push(payload.column2)
+      var x = null
       for(var row=0; state.data[row]; row++){
         //add new column at the end
-        state.data[row].push(  
-          state.data[row][payload.col].substring(
+        x = state.data[row][payload.col].substring( state.data[row][payload.col].indexOf(payload.char)+1 )
+        state.data[row].push( x )
+        /*  state.data[row][payload.col].substring(
             state.data[row][payload.col].indexOf(payload.char)+1
           )
-        )
+        )*/
+        if(row == 0 && !isNaN(x)) state.columns.push({type: 'numeric'})
+        else if (row == 0 && isNaN(x)) state.columns.push({type: 'text'})
         //modify current column
         state.data[row][payload.col] = state.data[row][payload.col].split(payload.char)[0] 
       }
@@ -286,6 +367,7 @@ export default new Vuex.Store({
       for(var row=0; state.data[row]; row++){
         if(state.data[row][payload.col] < payload.min || state.data[row][payload.col] > payload.max){
           state.data.splice(row,1)
+          row--
         }
       }
       state.dataHistory.push(state.data)
@@ -312,13 +394,18 @@ export default new Vuex.Store({
     },
     applyTrans(state){
       state.data2 = _.cloneDeep(state.data)
+      state.colHeaders2 = _.cloneDeep(state.colHeaders)
+      state.columns2 = _.cloneDeep(state.columns)
       state.changeCounter++
     },
     resetTrans(state){
       state.data = _.cloneDeep(state.data2)
+      state.colHeaders = _.cloneDeep(state.colHeaders2)
+      state.columns = _.cloneDeep(state.columns2)
       state.dataHistory.push(state.data)
       state.changeCounter++
     },
+    
     
   },
   actions: {
@@ -327,6 +414,9 @@ export default new Vuex.Store({
     },
     update(state){
       state.commit('update')
+    },
+    removeCol(state,payload){
+      state.commit('removeCol',payload)
     },
     removeOutliers (state, payload){
       state.commit('removeOutliers',payload)
@@ -371,14 +461,20 @@ export default new Vuex.Store({
         case "Is equal to": 
           break;
         case "Is not equal to": 
+          console.log("Not equal remove")
+          state.commit('removeDiff',payload)
           break;
         case "Greater than": 
+          state.commit('removeAbove',payload)
           break;
         case "Greater than or equal to": 
+          state.commit('removeAboveEq',payload)
           break;
         case "Less than": 
+          state.commit('removeBelow',payload)
           break;
         case "Less than or equal to": 
+          state.commit('removeBelowEq',payload)
           break;
         default: break;
       }

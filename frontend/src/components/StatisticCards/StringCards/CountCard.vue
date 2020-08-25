@@ -3,15 +3,15 @@
     <!--apexchart type="bar" :height="this.height" :options="chartOptions" :series="this.series2"></apexchart-->
     <v-card-title class="justify-center">Count</v-card-title>
     <v-container id="code" >
-      <v-row dense >
+      <v-row dense v-for="item in this.uniqueValues" :key="item.val" >
         <v-col id="codeCol" class="text--primary body-2" align="left">
-          <div  v-for="item in this.uniqueValues" :key="item.val" >
+          <div>
             <p class="line" v-if="item.val != ''">{{ item.val }}</p>
             <p class="line" v-else>Null</p>
           </div>
         </v-col>
         <v-col id="countCol" class="text--primary body-2" align="right">
-          <p class="line" v-for="item in this.uniqueValues" :key="item.val">{{item.count}}</p>
+          <p class="line">{{item.count}}</p>
         </v-col>
       </v-row>
     </v-container>

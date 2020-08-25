@@ -3,16 +3,28 @@
     <!--apexchart type="bar" :height="this.height" :options="chartOptions" :series="this.series2"></apexchart-->
     <v-card-title class="justify-center">Count</v-card-title>
     <v-container id="code" >
-      <v-row dense >
+
+        <v-row dense v-for="item in this.uniqueValues" :key="item.val" >
         <v-col id="codeCol" class="text--primary body-2" align="left">
-          <p class="line" v-for="item in this.uniqueValues" :key="item.val">
+          <div>
+            <p class="line" v-if="item.val != ''">{{ item.val }}</p>
+            <p class="line" v-else>Null</p>
+          </div>
+        </v-col>
+        <v-col id="countCol" class="text--primary body-2" align="right">
+          <p class="line">{{item.count}}</p>
+        </v-col>
+      </v-row>
+      <!--v-row dense >
+        <v-col id="codeCol" class="text--primary body-2" align="left">
+          <p class="line" align="left" v-for="item in this.uniqueValues" :key="item.val">
             {{ item.val }}
           </p>
         </v-col>
         <v-col id="countCol" class="text--primary body-2" align="right">
-          <p class="line" v-for="item in this.uniqueValues" :key="item.val">{{item.count}}</p>
+          <p class="line" align="right" v-for="item in this.uniqueValues" :key="item.val">{{item.count}}</p>
         </v-col>
-      </v-row>
+      </v-row-->
     </v-container>
   </v-card>
 </template>
@@ -65,8 +77,8 @@ export default {
       var uv = this.columnValues.filter( ((v, i, a) => a.indexOf(v) === i) )    
       var matrix = []
       for(var i = 0; i < uv.length; i++){
-        if(uv[i] == null) {
-          matrix.push({val: "Null",count: this.columnValues.filter( a => a == uv[i]).length})
+        if( uv[i] == null || uv[i] == '' ) {
+          matrix.push({val: "Null",count: this.columnValues.filter( a => a == '' || a == null ).length})
         }else{
           matrix.push({val: uv[i],count: this.columnValues.filter( a => a == uv[i]).length})
         }
@@ -83,7 +95,7 @@ export default {
 
 <style>
 p.line {
-  line-height: 0.7;
-  font-size: 90%;
+  line-height: 07;
+  font-size: 100%;
 }
 </style>
