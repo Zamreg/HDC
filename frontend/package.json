@@ -10,7 +10,7 @@
   "dependencies": {
     "@handsontable/vue": "^4.1.1",
     "@mdi/font": "^4.9.95",
-    "apexcharts": "^3.19.2",
+    "apexcharts": "^3.24.0",
     "core-js": "^3.6.4",
     "handsontable": "^7.4.2",
     "hooper": "^0.3.4",
