@@ -14,7 +14,7 @@
     "core-js": "^3.6.4",
     "handsontable": "^7.4.2",
     "hooper": "^0.3.4",
-    "lodash": "^4.17.19",
+    "lodash": "^4.17.21",
     "swiper": "^5.4.5",
     "vue": "^2.6.11",
     "vue-apexcharts": "^1.5.3",
